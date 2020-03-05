@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS `eduzz_db_test`;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
