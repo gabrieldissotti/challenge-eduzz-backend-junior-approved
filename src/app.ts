@@ -1,28 +1,36 @@
 import 'dotenv/config'
 
-import express from 'express'
+import server from 'express'
 import cors from 'cors'
+import swaggerUi from 'swagger-ui-express'
 
 import routes from './routes'
+import swaggerSpec from './config/swagger'
 
 class App {
-  public express: express.Application
+  public server: server.Application
 
   public constructor () {
-    this.express = express()
+    this.server = server()
 
     this.middlewares()
     this.routes()
   }
 
   private middlewares (): void {
-    this.express.use(express.json())
-    this.express.use(cors())
+    this.server.use(server.json())
+    this.server.use(cors())
+
+    this.server.use(
+      '/',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerSpec)
+    )
   }
 
   private routes (): void {
-    this.express.use(routes)
+    this.server.use(routes)
   }
 }
 
-export default new App().express
+export default new App().server
