@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -7,12 +7,12 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true
-      }
-    })
+        autoIncrement: true,
+      },
+    });
   },
 
   down: queryInterface => {
-    return queryInterface.dropTable('tests')
-  }
-}
+    return queryInterface.dropTable('tests');
+  },
+};

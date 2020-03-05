@@ -1,5 +1,5 @@
-import swaggerJSDoc from 'swagger-jsdoc'
-import path from 'path'
+import swaggerJSDoc from 'swagger-jsdoc';
+import path from 'path';
 
 const swaggerDefinition = {
   openapi: '3.0.2',
@@ -10,8 +10,8 @@ const swaggerDefinition = {
     contact: {
       name: 'Gabriel Dissotti',
       url: 'https://github.com/gabrieldissotti',
-      email: 'gabrieldnrodrigues@gmail.com'
-    }
+      email: 'gabrieldnrodrigues@gmail.com',
+    },
   },
   host: 'localhost:3333',
   basePath: '/',
@@ -20,19 +20,19 @@ const swaggerDefinition = {
       type: 'apiKey',
       name: 'Authorization',
       scheme: 'bearer',
-      in: 'header'
-    }
-  }
-}
+      in: 'header',
+    },
+  },
+};
 
 const options = {
   swaggerDefinition,
   apis: [
     path.resolve(__dirname, '..', 'app/models/*.js'),
-    path.resolve(__dirname, '..', 'app/controllers/*.js')
-  ]
-}
+    path.resolve(__dirname, '..', 'app/controllers/*.js'),
+  ],
+};
 
-const swaggerSpec = swaggerJSDoc(options)
+const swaggerSpec = swaggerJSDoc(options);
 
-export default swaggerSpec
+export default swaggerSpec;
