@@ -1,3 +1,6 @@
+up docker:
+> docker-compose up -d
+
 create migration:
 > yarn sequelize migration:create --name=migration-name
 
