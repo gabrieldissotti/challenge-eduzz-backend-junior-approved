@@ -4,6 +4,7 @@ import server from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 
+import './database';
 import routes from './routes';
 import swaggerSpec from './config/swagger';
 
@@ -20,8 +21,7 @@ class App {
   private middlewares (): void {
     this.server.use(server.json());
     this.server.use(cors());
-
-    this.server.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    this.server.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   }
 
   private routes (): void {
