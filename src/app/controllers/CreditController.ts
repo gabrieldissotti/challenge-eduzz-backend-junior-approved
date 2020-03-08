@@ -81,8 +81,8 @@ class CreditController {
 
       const { amount } = req.body;
 
-      if (!(Number(amount) > 0.00000001)) {
-        return res.status(400).json({ error: 'Amount minimum is 0.00000001' });
+      if (!(Number(amount) > 0.01)) {
+        return res.status(400).json({ error: 'Amount minimum is 0.01' });
       }
 
       const transaction = await Transaction.create({
