@@ -27,7 +27,7 @@ class SessionController {
    *            examples:
    *              user:
    *                value:
-   *                  email: 'test@eduzz.com.br'
+   *                  email: 'gabrieldnrodrigues@gmail.com'
    *                  password: '123456'
    *      responses:
    *        200:

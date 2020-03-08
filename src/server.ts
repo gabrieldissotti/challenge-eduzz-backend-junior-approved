@@ -16,6 +16,6 @@ if (process.env.NODE_ENV === 'production') {
     if (err) console.log(err);
     const url = `http://localhost:${process.env.API_PORT || 3333}`;
 
-    console.log(`🚀  Server is running with HTTP at ${url}`);
+    console.log(`🚀  Server is running at ${url}`);
   });
 }

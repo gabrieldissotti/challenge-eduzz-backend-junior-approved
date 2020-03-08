@@ -3,6 +3,10 @@ import { Request } from '../middlewares/auth';
 import * as Yup from 'yup';
 
 import Transaction from '../models/Transaction';
+import User from '../models/User';
+
+import Queue from '../../lib/Queue';
+import DepositMail from '../jobs/DepositMail';
 
 class CreditController {
   /**
@@ -90,6 +94,10 @@ class CreditController {
         type: 'credit',
         amount: Number(amount),
       })
+
+      const user = await User.findByPk(req.userId)
+
+      await Queue.add(DepositMail.key, { transaction, user });
 
       return res.json(transaction);
     } catch (error) {

@@ -18,3 +18,9 @@ run seeds
 
 undo seeds
 > yarn sequelize db:seed:undo:all
+
+
+run project
+> yarn start
+
+> yarn queue

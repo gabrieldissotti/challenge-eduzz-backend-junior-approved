@@ -25,8 +25,8 @@ class TestController {
    *            examples:
    *              user:
    *                value:
-   *                  name: 'user name'
-   *                  email: 'test@eduzz.com.br'
+   *                  name: 'Gabriel Dissotti'
+   *                  email: 'gabrieldnrodrigues@gmail.com'
    *                  password: '123456'
    *      responses:
    *        200:
