@@ -35,6 +35,16 @@ class TestController {
    *            application/json:
    *              schema:
    *                $ref: '#/definitions/User'
+   *        500:
+   *          description: internal server error
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  error:
+   *                    type: string
+   *                    example: 'Timeout'
    */
   async store (req: Request, res: Response): Promise<Response> {
     try {

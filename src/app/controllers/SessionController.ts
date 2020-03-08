@@ -36,6 +36,16 @@ class SessionController {
    *            application/json:
    *              schema:
    *                $ref: '#/definitions/Session'
+   *        500:
+   *          description: internal server error
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  error:
+   *                    type: string
+   *                    example: 'Timeout'
    */
   async store (req: Request, res: Response): Promise<Response> {
     const schema = Yup.object().shape({

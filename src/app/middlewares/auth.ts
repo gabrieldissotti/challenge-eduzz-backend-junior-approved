@@ -1,7 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
+import { Request as ExpressRequest } from 'express';
 
 import authConfig from '../../config/auth';
+
+export interface Request extends ExpressRequest {
+  userId: number;
+}
 
 export default async (req, res, next) => {
   const authHeader = req.headers.authorization;

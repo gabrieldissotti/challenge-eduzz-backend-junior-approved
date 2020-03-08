@@ -15,13 +15,16 @@ const swaggerDefinition = {
   },
   host: 'localhost:3333',
   basePath: '/',
-  securityDefinitions: {
-    bearerAuth: {
-      type: 'apiKey',
-      name: 'Authorization',
-      scheme: 'bearer',
-      in: 'header',
-    },
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        name: 'Authorization',
+        scheme: 'bearer',
+        in: 'header',
+        bearerFormat: 'JWT',
+      }
+    }
   },
 };
 
