@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import { Model } from 'sequelize-typescript';
+import bcrypt from 'bcryptjs';
 
 /**
  * @swagger
@@ -14,14 +15,22 @@ import { Model } from 'sequelize-typescript';
  *         type: string
  *       email:
  *         type: string
- *       password:
- *         type: string
- *       created_at:
- *         type: string
- *       updated_at:
+ *   Session:
+ *     type: object
+ *     properties:
+ *       user:
+ *         $ref: '#/definitions/User'
+ *       token:
  *         type: string
  */
 class User extends Model {
+  id?: number;
+  name?: string;
+  email?: string;
+  password?: string;
+  created_at?: string;
+  updated_at?: string;
+
   static init (sequelize): any {
     super.init(
       {
@@ -49,6 +58,12 @@ class User extends Model {
       }
     );
 
+    this.addHook('beforeSave', async (user: any) => {
+      if (user.password) {
+        user.password = await bcrypt.hash(user.password, 8);
+      }
+    });
+
     return this;
   }
 
@@ -57,6 +72,10 @@ class User extends Model {
       foreignKey: 'user_id',
       as: 'transactions',
     });
+  }
+
+  checkPassword (password): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
   }
 }
 
