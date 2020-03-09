@@ -16,6 +16,7 @@
     "test:watch": "NODE_ENV=test yarn jest --watchAll --coverage"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/date-fns": "^2.6.0",
     "@types/dotenv": "^8.2.0",
@@ -27,6 +28,7 @@
     "@types/swagger-jsdoc": "^3.0.2",
     "@types/swagger-ui-express": "^4.1.1",
     "@types/yup": "^0.26.32",
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "bee-queue": "^1.2.3",
     "cors": "^2.8.5",
