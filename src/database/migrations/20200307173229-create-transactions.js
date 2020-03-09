@@ -35,7 +35,7 @@ module.exports = {
         allowNull: false,
       },
       amount: {
-        type: Sequelize.DECIMAL(10, 8),
+        type: Sequelize.DECIMAL(16, 8),
         allowNull: false,
       },
       date: {
@@ -52,7 +52,7 @@ module.exports = {
         defaultValue: 'BRL'
       },
       currency_purchase_value_in_brl: {
-        type: Sequelize.DECIMAL(10, 8),
+        type: Sequelize.DECIMAL(16, 8),
         allowNull: false,
         defaultValue: 1
       },

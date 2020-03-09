@@ -30,6 +30,17 @@ import { Model } from 'sequelize-typescript';
  *         type: string
  */
 class Transaction extends Model {
+  type?: string
+  amount?: number
+  id?: number
+  user_id?: number
+  transaction_id?: number
+  date?: string
+  currency_type?: string
+  currency_purchase_value_in_brl?: number
+  created_at?: string
+  updated_at?: string
+
   static init (sequelize): any {
     super.init(
       {
@@ -52,7 +63,7 @@ class Transaction extends Model {
           allowNull: false,
         },
         amount: {
-          type: Sequelize.DECIMAL(10, 8),
+          type: Sequelize.DECIMAL(16, 8),
           allowNull: false,
         },
         date: {
@@ -66,7 +77,7 @@ class Transaction extends Model {
           defaultValue: 'BRL'
         },
         currency_purchase_value_in_brl: {
-          type: Sequelize.DECIMAL(10, 8),
+          type: Sequelize.DECIMAL(16, 8),
           allowNull: false,
           defaultValue: 1
         },

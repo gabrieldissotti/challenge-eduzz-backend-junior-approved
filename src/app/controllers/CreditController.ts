@@ -19,6 +19,11 @@ class CreditController {
    *        - Credits
    *      name: Credit money
    *      summary: credit money (deposit)
+   *      description: "
+   *
+   *  - The amount must be between 0.01 and 99999999.99
+   *
+   * "
    *      security:
    *        - bearerAuth: []
    *      produces:
@@ -87,6 +92,10 @@ class CreditController {
 
       if (!(Number(amount) > 0.01)) {
         return res.status(400).json({ error: 'Amount minimum is 0.01' });
+      }
+
+      if (!(Number(amount) < 99999999.99)) {
+        return res.status(400).json({ error: 'Amount maximum is 99999999.99' });
       }
 
       const transaction = await Transaction.create({

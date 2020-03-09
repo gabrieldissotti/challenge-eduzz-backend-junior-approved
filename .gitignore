@@ -1,6 +1,7 @@
 /node_modules
 /package-lock.json
-/coverage
+/__tests__/coverage
+/__tests__/database.sqlite
 /dist
 /.env
 /notes.txt

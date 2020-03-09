@@ -17,6 +17,13 @@ class TestController {
    *        - application/json
    *      consumes:
    *        - application/json
+   *      description: "
+   *
+   *  - The password must be longer then 6 characters \n
+   *  - The password, name and email are required \n
+   *  - The email must be valid
+   *
+   * "
    *      requestBody:
    *        content:
    *          application/json:

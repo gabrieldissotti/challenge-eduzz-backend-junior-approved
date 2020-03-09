@@ -2,7 +2,7 @@ import Sequelize from 'sequelize';
 import path from 'path';
 import { readdirSync } from 'fs';
 
-import mariadbConfig from '../config/mariadb';
+import databaseConfig from '../config/database';
 
 const sequelizeModels = [];
 
@@ -18,7 +18,7 @@ class Database {
   }
 
   init () {
-    this.connection = new Sequelize(mariadbConfig);
+    this.connection = new Sequelize(databaseConfig);
 
     sequelizeModels
       .map(model => model.init(this.connection))
