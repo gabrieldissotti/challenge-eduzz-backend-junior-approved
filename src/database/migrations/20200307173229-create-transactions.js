@@ -56,6 +56,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 1
       },
+      currency_liquidate_value_in_brl: {
+        type: Sequelize.DECIMAL(16, 8),
+        allowNull: false,
+        defaultValue: 1
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,

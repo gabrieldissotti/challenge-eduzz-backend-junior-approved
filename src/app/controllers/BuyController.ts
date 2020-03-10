@@ -1,29 +1,20 @@
 import { Response } from 'express';
 import { Request } from '../middlewares/auth';
-import * as Yup from 'yup';
 
+import MercadoBitcoinApi from '../services/mercadobitcoin';
 import Transaction from '../models/Transaction';
-import User from '../models/User';
 
-import Queue from '../../lib/Queue';
-import DepositMail from '../jobs/DepositMail';
-
-class CreditController {
+class BalanceController {
   /**
    * @swagger
    *
    *
-   * /credits:
+   * /buys:
    *    post:
    *      tags:
-   *        - Credits
-   *      name: Credit money
-   *      summary: credit money (deposit)
-   *      description: "
-   *
-   *  - The amount must be between 0.01 and 99999999.99
-   *
-   * "
+   *        - Bitcoin
+   *      name: Buy currency
+   *      summary: buy currency
    *      security:
    *        - bearerAuth: []
    *      produces:
@@ -36,18 +27,18 @@ class CreditController {
    *            schema:
    *              type: object
    *            examples:
-   *              R$ 25:
+   *              Buy Bitcoin:
    *                value:
-   *                  amount: 25
+   *                  amount_in_brl: 25
    *      responses:
    *        200:
    *          description: success
    *          content:
    *            application/json:
    *              schema:
-   *                $ref: '#/definitions/Transaction'
-   *        400:
-   *          description: bad request
+   *                $ref: '#/definitions/BuyTransaction'
+   *        401:
+   *          description: unauthorized
    *          content:
    *            application/json:
    *              schema:
@@ -55,7 +46,7 @@ class CreditController {
    *                properties:
    *                  message:
    *                    type: string
-   *                    example: 'Validation fails, check if sent parameters are correctly!'
+   *                    example: 'Insufficient money to debit'
    *        403:
    *          description: forbidden
    *          content:
@@ -79,41 +70,42 @@ class CreditController {
    */
   async store (req: Request, res: Response): Promise<Response> {
     try {
-      const schema = Yup.object().shape({
-        amount: Yup.number()
-          .required(),
+      const { data } = await MercadoBitcoinApi.get('/BTC/ticker/')
+      const { amount_in_brl } = req.body;
+
+      const bitcoin = {
+        buy: Number(data.ticker.buy),
+        sell: Number(data.ticker.sell)
+      }
+
+      const transactions = await Transaction.create({
+        user_id: req.userId,
+        type: 'debit',
+        amount: Number(amount_in_brl),
+      })
+
+      const amountInBTC = Transaction.convertMoney({
+        type: 'BRL_TO_BTC',
+        amount: amount_in_brl,
+        quote: bitcoin.buy
       });
 
-      await schema.validate(req.body).catch((err) => {
-        return res.status(400).json({ error: err.message || 'Validation fails' });
-      })
-
-      const { amount } = req.body;
-
-      if (!(Number(amount) > 0.01)) {
-        return res.status(400).json({ error: 'Amount minimum is 0.01' });
-      }
-
-      if (!(Number(amount) < 99999999.99)) {
-        return res.status(400).json({ error: 'Amount maximum is 99999999.99' });
-      }
-
-      const transaction = await Transaction.create({
+      transactions.dataValues.transaction = await Transaction.create({
         user_id: req.userId,
-        type: 'credit',
-        amount: Number(amount),
+        transaction_id: transactions.id,
+        type: 'purchase',
+        amount: amountInBTC,
+        currency_type: 'BTC',
+        currency_purchase_value_in_brl: bitcoin.buy,
+        currency_liquidate_value_in_brl: bitcoin.sell
       })
 
-      const user = await User.findByPk(req.userId)
-
-      await Queue.add(DepositMail.key, { transaction, user });
-
-      return res.json(transaction);
+      return res.json(transactions)
     } catch (error) {
       console.log(error)
-      return res.status(500).json({ error: error.message });
+      return res.status(error.status || 500).json({ error: error.message });
     }
   }
 }
 
-export default new CreditController();
+export default new BalanceController();

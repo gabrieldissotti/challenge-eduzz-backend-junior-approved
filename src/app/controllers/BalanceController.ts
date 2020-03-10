@@ -1,6 +1,5 @@
 import { Response } from 'express';
 import { Request } from '../middlewares/auth';
-import Sequelize, { Op } from 'sequelize';
 
 import Transaction from '../models/Transaction';
 
@@ -31,7 +30,7 @@ class BalanceController {
    *                properties:
    *                  amount:
    *                    type: string
-   *        401:
+   *        403:
    *          description: forbidden
    *          content:
    *            application/json:
@@ -54,32 +53,13 @@ class BalanceController {
    */
   async index (req: Request, res: Response): Promise<Response> {
     try {
-      const totalAmountByType = await Transaction.findAll({
-        where: {
-          user_id: req.userId,
-          type: {
-            [Op.in]: ['debit', 'credit']
-          },
-        },
-        attributes: [
-          'type',
-          [Sequelize.fn('sum', Sequelize.col('amount')), 'amount']
-        ],
-        group: ['type'],
+      const balance = await Transaction.getBalance({
+        user_id: req.userId
+      });
+
+      return res.json({
+        balance
       })
-
-      const balance = totalAmountByType.reduce((balance, { type, amount }): any => {
-        const match = {
-          credit: Number(balance.amount) + Number(amount),
-          debit: Number(balance.amount) - Number(amount)
-        }
-
-        return { amount: match[type] };
-      }, {
-        amount: 0
-      })
-
-      return res.json(balance)
     } catch (error) {
       console.log(error)
       return res.status(500).json({ error: error.message });

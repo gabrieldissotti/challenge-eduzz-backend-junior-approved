@@ -10,9 +10,9 @@ class BalanceController {
    * /quotes:
    *    get:
    *      tags:
-   *        - Bitcoin Quote
-   *      name: Bitcoin Quote
-   *      summary: get bitcoin quote
+   *        - Bitcoin
+   *      name: Currency quotes
+   *      summary: get currency quotes
    *      security:
    *        - bearerAuth: []
    *      produces:
@@ -29,7 +29,7 @@ class BalanceController {
    *                properties:
    *                  bitcoin:
    *                    type: number
-   *        401:
+   *        403:
    *          description: forbidden
    *          content:
    *            application/json:
