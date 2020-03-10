@@ -1,8 +1,13 @@
 import { Response } from 'express';
 import { Request } from '../middlewares/auth';
 
-import MercadoBitcoinApi from '../services/mercadobitcoin';
+import Queue from '../../lib/Queue';
+import BuyMail from '../jobs/BuyMail';
+
 import Transaction from '../models/Transaction';
+import User from '../models/User';
+
+import MercadoBitcoinApi from '../services/mercadobitcoin';
 
 class BalanceController {
   /**
@@ -99,6 +104,13 @@ class BalanceController {
         currency_purchase_value_in_brl: bitcoin.buy,
         currency_liquidate_value_in_brl: bitcoin.sell
       })
+
+      const user = await User.findByPk(req.userId)
+
+      await Queue.add(BuyMail.key, {
+        transaction: transactions,
+        user
+      });
 
       return res.json(transactions)
     } catch (error) {
