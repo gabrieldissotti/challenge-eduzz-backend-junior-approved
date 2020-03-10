@@ -13,18 +13,18 @@ describe('Buy Controller', () => {
     });
 
     it('should be able to buy bitcoin when user is authenticated and has balance', async () => {
-      const data = {
-        email: 'devinvestcoin9@gmail.com',
+      const { id, email } = await factory.create('User', {
         password: '123456'
-      };
-
-      const { id } = await factory.create('User', data)
+      })
 
       await factory.create('Transaction', { user_id: id })
 
       const authResponse = await request(app)
         .post('/sessions')
-        .send(data);
+        .send({
+          email,
+          password: '123456'
+        });
 
       expect(authResponse.status).toBe(200)
 
@@ -38,16 +38,16 @@ describe('Buy Controller', () => {
     });
 
     it('shouldn\'t be able to buy bitcoin when has insufficient balance', async () => {
-      const data = {
-        email: 'devinvestcoin6@gmail.com',
+      const user = await factory.create('User', {
         password: '123456'
-      };
-
-      await factory.create('User', data)
+      })
 
       const authResponse = await request(app)
         .post('/sessions')
-        .send(data);
+        .send({
+          email: user.email,
+          password: '123456'
+        });
 
       expect(authResponse.status).toBe(200)
 

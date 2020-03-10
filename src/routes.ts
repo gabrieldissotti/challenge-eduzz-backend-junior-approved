@@ -6,6 +6,7 @@ import CreditController from './app/controllers/CreditController';
 import BalanceController from './app/controllers/BalanceController';
 import QuoteController from './app/controllers/QuoteController';
 import BuyController from './app/controllers/BuyController';
+import PositionController from './app/controllers/PositionController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -26,5 +27,7 @@ routes.get('/balances', BalanceController.index);
 routes.get('/quotes', QuoteController.index);
 
 routes.post('/buys', BuyController.store);
+
+routes.get('/positions', PositionController.index);
 
 export default routes;

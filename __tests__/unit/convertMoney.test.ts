@@ -21,5 +21,15 @@ describe('Convert Money', () => {
 
       expect(conversion).toBe(0.00061275)
     });
+
+    it('0.0006127 BTC conversion with quote = 38005.00001 should be BRL 23.28566351', async () => {
+      const sellAmount = await Transaction.convertMoney({
+        type: 'BTC_TO_BRL',
+        amount: 0.0006127,
+        quote: 38005.00001,
+      })
+
+      expect(sellAmount).toBe(23.28566351)
+    });
   });
 })

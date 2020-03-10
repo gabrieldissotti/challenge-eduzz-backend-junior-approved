@@ -56,8 +56,29 @@ import errors from 'errors';
  *         type: string
  *       updated_at:
  *         type: string
- *       transaction:
+ *       children:
  *         $ref: '#/definitions/Transaction'
+ *   Position:
+ *     type: object
+ *     properties:
+ *       id:
+ *         type: integer
+ *       currency_purchase_value_in_brl:
+ *         type: number
+ *       currency_liquidate_value_in_brl:
+ *         type: number
+ *       current_currency_purchase_value_in_brl:
+ *         type: number
+ *       current_currency_liquidate_value_in_brl:
+ *         type: number
+ *       purchased_brl_amount:
+ *         type: number
+ *       current_brl_amount:
+ *         type: number
+ *       btc_variation:
+ *         type: number
+ *       date:
+ *         type: string
  */
 class Transaction extends Model {
   type?: string
@@ -71,7 +92,8 @@ class Transaction extends Model {
   currency_liquidate_value_in_brl?: number
   created_at?: string
   updated_at?: string
-  transaction?: any
+  parent?: any
+  children?: any
   dataValues?: any
 
   static init (sequelize): any {
@@ -135,7 +157,11 @@ class Transaction extends Model {
   static associate (models): void {
     this.hasOne(models.Transaction, {
       foreignKey: 'transaction_id',
-      as: 'transaction',
+      as: 'children',
+    });
+    this.belongsTo(models.Transaction, {
+      foreignKey: 'transaction_id',
+      as: 'parent',
     });
     this.belongsTo(models.User, {
       foreignKey: 'user_id',
@@ -172,10 +198,10 @@ class Transaction extends Model {
     return Number(balance.amount)
   }
 
-  static convertMoney ({ type, amount, quote }): number {
+  static convertMoney ({ type, amount, quote = null }): number {
     const convert = {
       BRL_TO_BTC: Number(amount) / Number(quote),
-      BTC_TO_BRL: Number(quote) * Number(amount),
+      BTC_TO_BRL: Number(amount) * Number(quote)
     }
 
     return Number(convert[type].toFixed(8));
@@ -195,6 +221,10 @@ class Transaction extends Model {
     }
 
     return true;
+  }
+
+  static getVariation ({ initialValue, currentValue }): number {
+    return Number((Number(initialValue) / Number(currentValue)).toFixed(8));
   }
 }
 

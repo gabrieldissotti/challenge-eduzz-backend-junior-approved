@@ -3,16 +3,16 @@ import app from '../../src/app';
 
 import factory from '../factories';
 
-describe('Quote Controller', () => {
+describe('Position Controller', () => {
   describe('index', () => {
-    it('shouldn\'t be able to get bitcoin quotes without authentication', async () => {
+    it('shouldn\'t be able to show positions without authentication', async () => {
       const response = await request(app)
-        .get('/quotes');
+        .get('/positions');
 
       expect(response.status).toBe(401)
     });
 
-    it('should be able to show user positions when authenticated', async () => {
+    it('should be able to show positions when user is authenticated', async () => {
       const data = {
         email: 'devinvestcoin4@gmail.com',
         password: '123456'
@@ -27,11 +27,11 @@ describe('Quote Controller', () => {
       expect(authResponse.status).toBe(200)
 
       const response = await request(app)
-        .get('/quotes')
+        .get('/positions')
         .set('Authorization', `Bearer ${authResponse.body.token}`);
 
       expect(response.status).toBe(200)
-      expect(response.body).toHaveProperty('bitcoin')
+      expect(response.body).toHaveProperty('rows')
     });
   });
 })

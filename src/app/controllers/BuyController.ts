@@ -95,7 +95,7 @@ class BalanceController {
         quote: bitcoin.buy
       });
 
-      transactions.dataValues.transaction = await Transaction.create({
+      transactions.dataValues.children = await Transaction.create({
         user_id: req.userId,
         transaction_id: transactions.id,
         type: 'purchase',
