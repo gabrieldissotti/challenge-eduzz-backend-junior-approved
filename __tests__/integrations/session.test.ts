@@ -6,16 +6,16 @@ import factory from '../factories';
 describe('Session Controller', () => {
   describe('store', () => {
     it('should be able to authenticate', async () => {
-      const user = {
-        email: 'devinvestcoin2@gmail.com',
+      const { email } = await factory.create('User', {
         password: '123456',
-      };
-
-      await factory.create('User', user)
+      })
 
       const response = await request(app)
         .post('/sessions')
-        .send(user);
+        .send({
+          email,
+          password: '123456',
+        });
 
       expect(response.body).toHaveProperty('token')
     });

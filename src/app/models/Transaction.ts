@@ -87,6 +87,7 @@ class Transaction extends Model {
   user_id?: number
   transaction_id?: number
   date?: string
+  status?: string
   currency_type?: string
   currency_purchase_value_in_brl?: number
   currency_liquidate_value_in_brl?: number
