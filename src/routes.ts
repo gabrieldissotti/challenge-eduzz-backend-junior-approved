@@ -10,6 +10,7 @@ import PositionController from './app/controllers/PositionController';
 import SellController from './app/controllers/SellController';
 import BankStatementController from './app/controllers/BankStatementController';
 import VolumeController from './app/controllers/VolumeController';
+import HistoryController from './app/controllers/HistoryController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -38,5 +39,7 @@ routes.post('/sells', SellController.store);
 routes.get('/bank-statements', BankStatementController.index);
 
 routes.get('/volumes', VolumeController.index);
+
+routes.get('/histories', HistoryController.index);
 
 export default routes;

@@ -17,7 +17,7 @@ describe('Buy Controller', () => {
         password: '123456'
       })
 
-      await factory.create('Transaction', { user_id: id })
+      await factory.create('Transaction', { user_id: id, amount: 99999999.99 })
 
       const authResponse = await request(app)
         .post('/sessions')

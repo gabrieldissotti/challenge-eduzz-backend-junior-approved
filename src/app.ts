@@ -8,6 +8,9 @@ import './database';
 import routes from './routes';
 import swaggerSpec from './config/swagger';
 
+import Queue from './lib/Queue';
+import UpdateCurrency from './app/jobs/UpdateCurrency';
+
 class App {
   public server: server.Application;
 
@@ -16,6 +19,7 @@ class App {
 
     this.middlewares();
     this.routes();
+    this.jobs();
   }
 
   private middlewares (): void {
@@ -26,6 +30,10 @@ class App {
 
   private routes (): void {
     this.server.use(routes);
+  }
+
+  public jobs (): void {
+    Queue.add(UpdateCurrency.key, {});
   }
 }
 
