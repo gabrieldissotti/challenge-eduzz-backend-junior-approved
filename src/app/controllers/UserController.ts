@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 
 import User from '../models/User';
 
-class TestController {
+class UserController {
   /**
    * @swagger
    *
@@ -84,4 +84,4 @@ class TestController {
   }
 }
 
-export default new TestController();
+export default new UserController();

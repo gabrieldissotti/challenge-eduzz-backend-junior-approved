@@ -7,6 +7,7 @@ import BalanceController from './app/controllers/BalanceController';
 import QuoteController from './app/controllers/QuoteController';
 import BuyController from './app/controllers/BuyController';
 import PositionController from './app/controllers/PositionController';
+import SellController from './app/controllers/SellController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -29,5 +30,7 @@ routes.get('/quotes', QuoteController.index);
 routes.post('/buys', BuyController.store);
 
 routes.get('/positions', PositionController.index);
+
+routes.post('/sells', SellController.store);
 
 export default routes;

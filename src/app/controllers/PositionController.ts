@@ -6,7 +6,7 @@ import Transaction from '../models/Transaction';
 
 import MercadoBitcoinApi from '../services/mercadobitcoin';
 
-class BalanceController {
+class PositionController {
   /**
    * @swagger
    *
@@ -151,4 +151,4 @@ class BalanceController {
   }
 }
 
-export default new BalanceController();
+export default new PositionController();

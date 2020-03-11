@@ -17,4 +17,11 @@ factory.define('Transaction', Transaction, {
   currency_type: 'BRL',
 })
 
+factory.define('TransactionBTC', Transaction, {
+  amount: 999,
+  user_id: 1,
+  type: 'purchase',
+  currencyType: 'BTC',
+})
+
 export default factory

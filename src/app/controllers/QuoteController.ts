@@ -2,7 +2,7 @@ import { Response } from 'express';
 import { Request } from '../middlewares/auth';
 import MercadoBitcoinApi from '../services/mercadobitcoin';
 
-class BalanceController {
+class QuoteController {
   /**
    * @swagger
    *
@@ -69,4 +69,4 @@ class BalanceController {
   }
 }
 
-export default new BalanceController();
+export default new QuoteController();

@@ -1,9 +1,10 @@
 import Bee from 'bee-queue';
 import DepositMail from '../app/jobs/DepositMail';
 import BuyMail from '../app/jobs/BuyMail';
+import SellMail from '../app/jobs/SellMail';
 import redisConfig from '../config/redis';
 
-const jobs = [DepositMail, BuyMail];
+const jobs = [DepositMail, BuyMail, SellMail];
 
 class Queue {
   queues?: any

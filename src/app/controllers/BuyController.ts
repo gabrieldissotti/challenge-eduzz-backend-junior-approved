@@ -9,7 +9,7 @@ import User from '../models/User';
 
 import MercadoBitcoinApi from '../services/mercadobitcoin';
 
-class BalanceController {
+class BuyController {
   /**
    * @swagger
    *
@@ -120,4 +120,4 @@ class BalanceController {
   }
 }
 
-export default new BalanceController();
+export default new BuyController();

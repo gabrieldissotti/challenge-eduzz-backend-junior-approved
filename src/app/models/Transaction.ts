@@ -169,25 +169,46 @@ class Transaction extends Model {
     });
   }
 
-  static async getBalance ({ user_id }): Promise<number> {
-    const totalAmountByType = await this.findAll({
-      where: {
-        user_id,
-        type: {
-          [Op.in]: ['debit', 'credit']
+  static async getBalance ({ user_id, currencyType }): Promise<number> {
+    const conditionsByCurrency = {
+      ...(currencyType === 'BTC' ? {
+        where: {
+          user_id,
+          type: {
+            [Op.in]: ['purchase', 'liquidate']
+          }
         },
-      },
+        include: [
+          {
+            model: Transaction,
+            as: 'children'
+          }
+        ]
+      } : {
+        where: {
+          user_id,
+          type: {
+            [Op.in]: ['debit', 'credit']
+          }
+        }
+      })
+    }
+
+    const totalAmountByType = await this.findAll({
+      ...conditionsByCurrency,
       attributes: [
         'type',
-        [Sequelize.fn('sum', Sequelize.col('amount')), 'amount']
+        [Sequelize.fn('sum', Sequelize.col('Transaction.amount')), 'amount']
       ],
-      group: ['type'],
+      group: ['Transaction.type'],
     })
 
     const balance = totalAmountByType.reduce((balance, { type, amount }): any => {
       const match = {
         credit: Number(balance.amount) + Number(amount),
-        debit: Number(balance.amount) - Number(amount)
+        debit: Number(balance.amount) - Number(amount),
+        purchase: Number(balance.amount) + Number(amount),
+        liquidate: Number(balance.amount) - Number(amount),
       }
 
       return { amount: match[type] };
