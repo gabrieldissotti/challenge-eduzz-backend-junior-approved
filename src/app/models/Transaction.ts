@@ -121,15 +121,20 @@ class Transaction extends Model {
           type: Sequelize.DECIMAL(16, 8),
           allowNull: false,
         },
-        date: {
-          type: Sequelize.DATE,
-          allowNull: false,
-          defaultValue: Sequelize.NOW
-        },
         currency_type: {
           type: Sequelize.STRING,
           allowNull: false,
           defaultValue: 'BRL'
+        },
+        status: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          defaultValue: 'normal'
+        },
+        date: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.NOW
         },
         currency_purchase_value_in_brl: {
           type: Sequelize.DECIMAL(16, 8),
@@ -174,6 +179,7 @@ class Transaction extends Model {
       ...(currencyType === 'BTC' ? {
         where: {
           user_id,
+          status: 'normal',
           type: {
             [Op.in]: ['purchase', 'liquidate']
           }
@@ -187,6 +193,7 @@ class Transaction extends Model {
       } : {
         where: {
           user_id,
+          status: 'normal',
           type: {
             [Op.in]: ['debit', 'credit']
           }
@@ -231,7 +238,8 @@ class Transaction extends Model {
   static async validateUserBalance (transaction: any): Promise<boolean> {
     if (transaction.type === 'debit') {
       const balance = await this.getBalance({
-        user_id: transaction.user_id
+        user_id: transaction.user_id,
+        currencyType: 'BRL'
       });
 
       if (balance <= 0 || balance < transaction.amount) {

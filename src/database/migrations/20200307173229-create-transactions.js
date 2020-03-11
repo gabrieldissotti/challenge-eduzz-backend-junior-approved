@@ -29,19 +29,14 @@ module.exports = {
         type: Sequelize.ENUM([
           'debit',
           'credit',
-          'purchase',
-          'liquidate'
+          'purchase'
         ]),
         allowNull: false,
       },
+
       amount: {
         type: Sequelize.DECIMAL(16, 8),
         allowNull: false,
-      },
-      date: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.NOW
       },
       currency_type: {
         type: Sequelize.ENUM([
@@ -50,6 +45,19 @@ module.exports = {
         ]),
         allowNull: false,
         defaultValue: 'BRL'
+      },
+      status: {
+        type: Sequelize.ENUM([
+          'normal',
+          'liquidated'
+        ]),
+        allowNull: false,
+        defaultValue: 'normal'
+      },
+      date: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.NOW
       },
       currency_purchase_value_in_brl: {
         type: Sequelize.DECIMAL(16, 8),

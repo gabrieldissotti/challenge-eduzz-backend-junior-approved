@@ -113,7 +113,7 @@ class PositionController {
           {
             model: Transaction,
             as: 'parent'
-          }
+          },
         ]
       })
 
@@ -134,7 +134,7 @@ class PositionController {
             type: 'BTC_TO_BRL',
             amount: transaction.amount,
             quote: data.ticker.sell,
-          }), // calculate value
+          }),
           btc_variation: Transaction.getVariation({
             initialValue: transaction.currency_purchase_value_in_brl,
             currentValue: data.ticker.buy

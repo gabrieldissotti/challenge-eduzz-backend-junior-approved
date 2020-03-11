@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { Request } from '../middlewares/auth';
 import errors from 'errors';
+import { Op } from 'sequelize';
 
 import Queue from '../../lib/Queue';
 import SellMail from '../jobs/SellMail';
@@ -105,6 +106,7 @@ class SellController {
           user_id: req.userId,
           type: 'purchase',
           currency_type: 'BTC',
+          status: 'normal'
         },
         include: [
           {
@@ -135,9 +137,7 @@ class SellController {
         })
       }
 
-      const doesNotLiquidated = purchases.filter(purchase => !purchase.children);
-
-      const transactionsToLiquidate = doesNotLiquidated.reduce((accumulator, current) => {
+      const toLiquidate = purchases.reduce((accumulator, current) => {
         if (Number(accumulator.total_amount) < Number(sellAmount)) {
           return {
             total_amount: Number(accumulator.total_amount) + Number(current.amount),
@@ -152,19 +152,17 @@ class SellController {
         rows: []
       });
 
-      const liquidateTransactions = transactionsToLiquidate.rows.map(transaction => ({
-        type: 'liquidate',
-        currency_type: 'BTC',
-        user_id: transaction.user_id,
-        transaction_id: transaction.id,
-        amount: Number(transaction.amount)
-      }))
+      await Transaction.update({
+        status: 'liquidated'
+      }, {
+        where: {
+          id: toLiquidate.rows.map(transaction => transaction.id)
+        }
+      })
 
-      const liquidatedTransactions = await Transaction.bulkCreate(liquidateTransactions, { validate: true })
-
-      const creditTransactions = liquidatedTransactions.map(transaction => ({
+      const creditLiquidations = toLiquidate.rows.map(transaction => ({
         type: 'credit',
-        user_id: transaction.user_id,
+        user_id: req.userId,
         transaction_id: transaction.id,
         amount: Transaction.convertMoney({
           type: 'BTC_TO_BRL',
@@ -173,11 +171,11 @@ class SellController {
         })
       }))
 
-      const creditedTransactions = await Transaction.bulkCreate(creditTransactions, { validate: true })
+      const credited = await Transaction.bulkCreate(creditLiquidations, { validate: true })
 
-      const fullLiquidationAmount = Number(transactionsToLiquidate.total_amount);
+      const fullLiquidationAmount = Number(toLiquidate.total_amount);
+
       let reinvestedTransaction;
-
       if (fullLiquidationAmount > Number(sellAmount)) {
         const brlReceived = Transaction.convertMoney({
           type: 'BTC_TO_BRL',
@@ -185,8 +183,16 @@ class SellController {
           quote: bitcoin.sell
         });
 
+        const debitTransaction = await Transaction.create({
+          type: 'debit',
+          user_id: req.userId,
+          amount: Number(brlReceived),
+          status: 'liquidated'
+        })
+
         reinvestedTransaction = await Transaction.create({
           type: 'purchase',
+          transaction_id: debitTransaction.id,
           currency_type: 'BTC',
           user_id: req.userId,
           amount: Transaction.convertMoney({
@@ -198,10 +204,10 @@ class SellController {
       }
 
       const response = {
-        total_liquidated_amount: liquidatedTransactions.reduce((sum, actual) => Number(sum) + Number(actual.amount), 0).toFixed(8),
-        total_credited_amount: creditedTransactions.reduce((sum, actual) => Number(sum) + Number(actual.amount), 0).toFixed(8),
-        liquidated: liquidatedTransactions,
-        credited: creditedTransactions,
+        total_liquidated_amount: toLiquidate.rows.reduce((sum, actual) => Number(sum) + Number(actual.amount), 0).toFixed(8),
+        total_credited_amount: credited.reduce((sum, actual) => Number(sum) + Number(actual.amount), 0).toFixed(8),
+        liquidated: toLiquidate.rows,
+        credited,
         reinvested: reinvestedTransaction,
       }
 

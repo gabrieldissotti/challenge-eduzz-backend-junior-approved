@@ -54,7 +54,8 @@ class BalanceController {
   async index (req: Request, res: Response): Promise<Response> {
     try {
       const balance = await Transaction.getBalance({
-        user_id: req.userId
+        user_id: req.userId,
+        currencyType: 'BRL'
       });
 
       return res.json({
