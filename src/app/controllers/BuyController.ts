@@ -17,9 +17,9 @@ class BuyController {
    * /buys:
    *    post:
    *      tags:
-   *        - Bitcoin
+   *        - Bitcoin (BTC)
    *      name: Buy currency
-   *      summary: buy currency
+   *      summary: buy bitcoin (BTC) amount with BRL
    *      security:
    *        - bearerAuth: []
    *      produces:

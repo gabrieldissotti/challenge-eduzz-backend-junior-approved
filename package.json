@@ -9,6 +9,7 @@
     "start": "nodemon src/server.ts",
     "queue": "nodemon src/queue.ts",
     "build": "sucrase ./src -d ./dist --transforms typescript,imports",
+    "postbuild": "cp -R ./src/app/views ./dist/app",
     "lint": "yarn eslint --fix src --ext .ts",
     "pretest": "NODE_ENV=test yarn sequelize db:migrate",
     "test": "NODE_ENV=test yarn jest --coverage --forceExit",

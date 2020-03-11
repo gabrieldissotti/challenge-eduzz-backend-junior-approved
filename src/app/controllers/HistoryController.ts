@@ -12,9 +12,9 @@ class HistoryController {
    * /histories:
    *    get:
    *      tags:
-   *        - History
+   *        - Bitcoin (BTC)
    *      name: History
-   *      summary: get bitcoin history
+   *      summary: show bitcoin history (sell and buy value) of last 24 hours
    *      security:
    *        - bearerAuth: []
    *      produces:

@@ -14,9 +14,9 @@ class BankStatementController {
    * /bank-statements:
    *    get:
    *      tags:
-   *        - Bitcoin
-   *      name: Currency quotes
-   *      summary: get currency quotes
+   *        - Bank Statements
+   *      name: Bank Statements
+   *      summary: get bank statements (purchases, credits and debits)
    *      security:
    *        - bearerAuth: []
    *      produces:
