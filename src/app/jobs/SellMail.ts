@@ -18,7 +18,7 @@ class SellMail {
         user,
         transactions,
         date: format(
-          parseISO(transactions.credited[0].date),
+          parseISO(transactions?.credited[0]?.date || new Date()),
           "'dia' dd 'de' MMMM', às' H:mm'h'",
           {
             locale: pt,
