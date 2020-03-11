@@ -1,7 +1,6 @@
 import { Response } from 'express';
 import { Request } from '../middlewares/auth';
 import errors from 'errors';
-import { Op } from 'sequelize';
 
 import Queue from '../../lib/Queue';
 import SellMail from '../jobs/SellMail';

@@ -13,7 +13,7 @@ factory.define('User', User, {
 factory.define('Transaction', Transaction, {
   user_id: 1,
   type: 'credit',
-  amount: 25,
+  amount: 9999,
   currency_type: 'BRL',
 })
 

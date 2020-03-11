@@ -54,7 +54,7 @@ describe('Buy Controller', () => {
       const response = await request(app)
         .post('/buys')
         .send({
-          amount_in_brl: 25
+          amount_in_brl: 99999999
         })
         .set('Authorization', `Bearer ${authResponse.body.token}`);
 

@@ -8,6 +8,7 @@ import QuoteController from './app/controllers/QuoteController';
 import BuyController from './app/controllers/BuyController';
 import PositionController from './app/controllers/PositionController';
 import SellController from './app/controllers/SellController';
+import BankStatementController from './app/controllers/BankStatementController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -32,5 +33,7 @@ routes.post('/buys', BuyController.store);
 routes.get('/positions', PositionController.index);
 
 routes.post('/sells', SellController.store);
+
+routes.get('/bank-statements', BankStatementController.index);
 
 export default routes;
