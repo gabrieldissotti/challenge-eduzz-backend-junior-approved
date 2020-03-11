@@ -10,7 +10,12 @@ module.exports = {
   ],
   globals: {
     Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly'
+    SharedArrayBuffer: 'readonly',
+    it: 'readonly',
+    describe: 'readonly',
+    beforeEach: 'readonly',
+    expect: 'readonly',
+    afterAll: 'readonly',
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -23,6 +28,10 @@ module.exports = {
   rules: {
     "class-methods-use-this": "off",
     "camelcase": "off",
-    "@typescript-eslint/camelcase": "off"
+    "@typescript-eslint/camelcase": "off",
+    "no-param-reassign": "off",
+    "semi": "off",
+    "comma-dangle": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
   }
 }

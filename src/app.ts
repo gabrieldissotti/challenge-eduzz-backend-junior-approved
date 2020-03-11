@@ -1,28 +1,40 @@
-import 'dotenv/config'
+import './bootstrap';
 
-import express from 'express'
-import cors from 'cors'
+import server from 'express';
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 
-import routes from './routes'
+import './database';
+import routes from './routes';
+import swaggerSpec from './config/swagger';
+
+import Queue from './lib/Queue';
+import UpdateCurrency from './app/jobs/UpdateCurrency';
 
 class App {
-  public express: express.Application
+  public server: server.Application;
 
   public constructor () {
-    this.express = express()
+    this.server = server();
 
-    this.middlewares()
-    this.routes()
+    this.middlewares();
+    this.routes();
+    this.jobs();
   }
 
   private middlewares (): void {
-    this.express.use(express.json())
-    this.express.use(cors())
+    this.server.use(server.json());
+    this.server.use(cors());
+    this.server.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   }
 
   private routes (): void {
-    this.express.use(routes)
+    this.server.use(routes);
+  }
+
+  public jobs (): void {
+    Queue.add(UpdateCurrency.key, {});
   }
 }
 
-export default new App().express
+export default new App().server;
