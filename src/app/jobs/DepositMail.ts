@@ -26,6 +26,7 @@ class DepositMail {
         ),
       },
     });
+    console.log(`sent deposit email to ${user.email}`)
   }
 }
 

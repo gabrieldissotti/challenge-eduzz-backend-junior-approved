@@ -26,6 +26,8 @@ class BuyMail {
         ),
       },
     });
+
+    console.log(`sent buy email to ${user.email}`)
   }
 }
 

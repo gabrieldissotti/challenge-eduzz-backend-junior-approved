@@ -14,9 +14,9 @@ class PositionController {
    * /positions:
    *    get:
    *      tags:
-   *        - Bitcoin
+   *        - Bitcoin (BTC)
    *      name: Currency quotes
-   *      summary: get currency quotes
+   *      summary: list investments position
    *      security:
    *        - bearerAuth: []
    *      produces:

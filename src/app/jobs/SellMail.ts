@@ -26,6 +26,7 @@ class SellMail {
         ),
       },
     });
+    console.log(`sent sell email to ${user.email}`)
   }
 }
 

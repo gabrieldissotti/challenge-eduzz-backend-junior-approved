@@ -11,9 +11,9 @@ class BalanceController {
    * /balances:
    *    get:
    *      tags:
-   *        - Balance
+   *        - Real (BRL)
    *      name: Balance
-   *      summary: get user balance
+   *      summary: get user balance in BRL
    *      security:
    *        - bearerAuth: []
    *      produces:

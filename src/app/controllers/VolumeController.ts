@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { Request } from '../middlewares/auth';
-import { startOfDay, endOfDay, parseISO, format } from 'date-fns';
+import { startOfDay, endOfDay } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
 import Sequelize, { Op } from 'sequelize';
@@ -15,9 +15,9 @@ class VolumeController {
    * /volumes:
    *    get:
    *      tags:
-   *        - Bitcoin
+   *        - Bitcoin (BTC)
    *      name: Currency quotes
-   *      summary: get currency quotes
+   *      summary: total bitcoins sold and bought today in BTC
    *      security:
    *        - bearerAuth: []
    *      produces:
