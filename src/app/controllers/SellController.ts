@@ -18,9 +18,9 @@ class SellController {
    * /sells:
    *    post:
    *      tags:
-   *        - Bitcoin
-   *      name: Buy currency
-   *      summary: buy currency
+   *        - Bitcoin (BTC)
+   *      name: Sell currency
+   *      summary: Sell currency (BTC)
    *      security:
    *        - bearerAuth: []
    *      produces:
@@ -35,7 +35,7 @@ class SellController {
    *            examples:
    *              Buy Bitcoin:
    *                value:
-   *                  amount_in_btc: 25
+   *                  amount_in_btc: 0.00001
    *      responses:
    *        200:
    *          description: success
@@ -137,7 +137,7 @@ class SellController {
       }
 
       const toLiquidate = purchases.reduce((accumulator, current) => {
-        if (Number(accumulator.total_amount) < Number(sellAmount)) {
+        if (accumulator && Number(accumulator.total_amount) < Number(sellAmount)) {
           return {
             total_amount: Number(accumulator.total_amount) + Number(current.amount),
             rows: [
@@ -146,6 +146,8 @@ class SellController {
             ]
           }
         }
+
+        return accumulator;
       }, {
         total_amount: 0,
         rows: []

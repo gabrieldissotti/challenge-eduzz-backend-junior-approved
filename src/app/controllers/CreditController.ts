@@ -16,9 +16,9 @@ class CreditController {
    * /credits:
    *    post:
    *      tags:
-   *        - Credits
+   *        - Real (BRL)
    *      name: Credit money
-   *      summary: credit money (deposit)
+   *      summary: credit money (deposit) in BRL
    *      description: "
    *
    *  - The amount must be between 0.01 and 99999999.99

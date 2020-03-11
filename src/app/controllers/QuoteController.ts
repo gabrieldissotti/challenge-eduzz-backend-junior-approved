@@ -10,9 +10,9 @@ class QuoteController {
    * /quotes:
    *    get:
    *      tags:
-   *        - Bitcoin
+   *        - Bitcoin (BTC)
    *      name: Currency quotes
-   *      summary: get currency quotes
+   *      summary: get currency quotes (sell and buy BRL values at moment)
    *      security:
    *        - bearerAuth: []
    *      produces:
@@ -28,7 +28,12 @@ class QuoteController {
    *                type: object
    *                properties:
    *                  bitcoin:
-   *                    type: number
+   *                    type: object
+   *                    properties:
+   *                      buy:
+   *                        type: number
+   *                      sell:
+   *                        type: number
    *        403:
    *          description: forbidden
    *          content:
