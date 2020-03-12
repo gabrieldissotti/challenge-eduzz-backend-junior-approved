@@ -2,6 +2,7 @@ import request from 'supertest';
 import app from '../../src/app';
 
 import factory from '../factories';
+import User from '../../src/app/models/User';
 
 describe('Balance Controller', () => {
   describe('index', () => {
@@ -13,16 +14,16 @@ describe('Balance Controller', () => {
     });
 
     it('should be able to request balance when user is authenticated', async () => {
-      const data = {
-        email: 'devinvestcoin@gmail.com',
+      const { email } = await factory.create('User', {
         password: '123456'
-      };
-
-      await factory.create('User', data)
+      })
 
       const authResponse = await request(app)
         .post('/sessions')
-        .send(data);
+        .send({
+          email,
+          password: '123456'
+        });
 
       expect(authResponse.status).toBe(200)
 

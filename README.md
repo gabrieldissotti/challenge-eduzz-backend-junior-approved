@@ -169,7 +169,7 @@ yarn sequelize db:migrate:undo:all
 yarn test
 
 # run tests and update coverage
-yarn test:coverage
+yarn test --coverage
 
 # run tests watching
 yarn test:watch

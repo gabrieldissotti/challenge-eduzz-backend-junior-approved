@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.57% </span>
+                <span class="strong">72.41% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>24/35</span>
+                <span class='fraction'>21/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">53.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>16/32</span>
+                <span class='fraction'>16/30</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.82% </span>
+                <span class="strong">94.12% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/22</span>
+                <span class='fraction'>16/17</span>
             </div>
         
             
@@ -123,24 +123,17 @@
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">22x</span>
+<a name='L67'></a><a href='#L67'>67</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -192,11 +185,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -212,63 +200,57 @@ import Transaction from '../../models/Transaction';
 &nbsp;
 class BankStatementController {
   async index (req: Request, res: Response): Promise&lt;Response&gt; {
-    try {
-      const schema = Yup.object().shape({
-        pagesize: Yup.number().integer(),
-        page: Yup.number().integer(),
-        start_date: Yup.string(),
-        end_date: Yup.string(),
-      });
+    const schema = Yup.object().shape({
+      pagesize: Yup.number().integer(),
+      page: Yup.number().integer(),
+      start_date: Yup.string(),
+      end_date: Yup.string(),
+    });
 &nbsp;
-      await schema.validate(req.body).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
-<span class="cstat-no" title="statement not covered" >        return res.status(400).json({ error: err.message || 'Validation fails' });</span>
-      })
+    await schema.validate(req.body).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
+<span class="cstat-no" title="statement not covered" >      return res.status(400).json({ error: err.message });</span>
+    })
 &nbsp;
-      const {
-        pagesize,
-        page,
-        start_date,
-        end_date
-      } = req.query;
+    const {
+      pagesize,
+      page,
+      start_date,
+      end_date
+    } = req.query;
 &nbsp;
-      const limit = Number(pagesize || 30);
+    const limit = Number(pagesize || 30);
 &nbsp;
-      const offset = page ? <span class="branch-0 cbranch-no" title="branch not covered" >(Number(page) - 1) * limit </span>: 0;
+    const offset = page ? <span class="branch-0 cbranch-no" title="branch not covered" >(Number(page) - 1) * limit </span>: 0;
 &nbsp;
-      const startDate = start_date ? <span class="branch-0 cbranch-no" title="branch not covered" >new Date(start_date) </span>: new Date();
-      const todayLess90Days = new Date();
-      todayLess90Days.setDate(startDate.getDate() - 90)
+    const startDate = start_date ? <span class="branch-0 cbranch-no" title="branch not covered" >new Date(start_date) </span>: new Date();
+    const todayLess90Days = new Date();
+    todayLess90Days.setDate(startDate.getDate() - 90)
 &nbsp;
-      const transactions = await Transaction.findAndCountAll({
-        limit,
-        offset,
-        where: {
-          user_id: req.userId,
-          ...(start_date &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!end_date</span>
-            ? <span class="branch-0 cbranch-no" title="branch not covered" >{ date: { [Op.gte]: startOfDay(startDate) } }</span>
-            : { date: { [Op.gte]: startOfDay(todayLess90Days) } }),
-          ...(end_date &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!start_date</span>
-            ? <span class="branch-0 cbranch-no" title="branch not covered" >{ date: { [Op.lte]: endOfDay(new Date(end_date)) } }</span>
-            : ''),
-          ...(start_date &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >end_date</span>
-            ? <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-              date: {
-                [Op.between]: [
-                  startOfDay(startDate),
-                  endOfDay(new Date(end_date)),
-                ],
-              },
-            }
-            : ''),
-        },
-      })
+    const transactions = await Transaction.findAndCountAll({
+      limit,
+      offset,
+      where: {
+        user_id: req.userId,
+        ...(start_date &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!end_date</span>
+          ? <span class="branch-0 cbranch-no" title="branch not covered" >{ date: { [Op.gte]: startOfDay(startDate) } }</span>
+          : { date: { [Op.gte]: startOfDay(todayLess90Days) } }),
+        ...(end_date &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!start_date</span>
+          ? <span class="branch-0 cbranch-no" title="branch not covered" >{ date: { [Op.lte]: endOfDay(new Date(end_date)) } }</span>
+          : ''),
+        ...(start_date &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >end_date</span>
+          ? <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+            date: {
+              [Op.between]: [
+                startOfDay(startDate),
+                endOfDay(new Date(end_date)),
+              ],
+            },
+          }
+          : ''),
+      },
+    })
 &nbsp;
-      return res.json(transactions)
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.log(error)</span>
-<span class="cstat-no" title="statement not covered" >      logger.error(error.message)</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(500).json({ error: error.message });</span>
-    }
+    return res.json(transactions)
   }
 }
 &nbsp;
@@ -280,7 +262,7 @@ export default new BankStatementController();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Mar 12 2020 14:14:07 GMT-0300 (GMT-03:00)
+                at Thu Mar 12 2020 15:38:46 GMT-0300 (GMT-03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

@@ -19,5 +19,13 @@ describe('Session Controller', () => {
 
       expect(response.body).toHaveProperty('token')
     });
+
+    it('should not be able to authenticate when doesn\'t email and password', async () => {
+      const response = await request(app)
+        .post('/sessions')
+        .send();
+
+      expect(response.status).toBe(400)
+    });
   });
 })

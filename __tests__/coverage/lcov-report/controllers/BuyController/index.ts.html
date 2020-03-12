@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.77% </span>
+                <span class="strong">92.86% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>30/31</span>
+                <span class='fraction'>26/28</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.83% </span>
+                <span class="strong">90.48% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/24</span>
+                <span class='fraction'>19/21</span>
             </div>
         
             
@@ -121,11 +121,7 @@
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">66x</span>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -139,7 +135,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -182,13 +177,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,56 +199,52 @@ import MercadoBitcoinApi from '../../services/mercadobitcoin';
 &nbsp;
 class BuyController {
   async store (req: Request, res: Response): Promise&lt;Response&gt; {
-    try {
-      const { data } = await MercadoBitcoinApi.get('/BTC/ticker/')
-      const { amount_in_brl } = req.body;
+    const { data } = await MercadoBitcoinApi.get('/BTC/ticker/')
+    const { amount_in_brl } = req.body;
 &nbsp;
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!(Number(amount_in_brl) &gt; 0.01)) {
-<span class="cstat-no" title="statement not covered" >        return res.status(400).json({ error: 'Amount minimum is 0.01' });</span>
-      }
-&nbsp;
-      const bitcoin = {
-        buy: Number(data.ticker.buy),
-        sell: Number(data.ticker.sell)
-      }
-&nbsp;
-      const transactions = await Transaction.create({
-        user_id: req.userId,
-        type: 'debit',
-        amount: Number(amount_in_brl),
-      })
-&nbsp;
-      const amountInBTC = Transaction.convertMoney({
-        type: 'BRL_TO_BTC',
-        amount: amount_in_brl,
-        quote: bitcoin.buy
-      });
-&nbsp;
-      transactions.dataValues.children = await Transaction.create({
-        user_id: req.userId,
-        transaction_id: transactions.id,
-        type: 'purchase',
-        amount: amountInBTC,
-        currency_type: 'BTC',
-        currency_purchase_value_in_brl: bitcoin.buy,
-        currency_liquidate_value_in_brl: bitcoin.sell
-      })
-&nbsp;
-      const user = await User.findByPk(req.userId)
-&nbsp;
-      await Queue.add(BuyMail.key, {
-        transaction: transactions,
-        user
-      });
-&nbsp;
-      logger.info(`${user.name} &lt;${user.email}&gt; comprou ${amountInBTC} bitcoins (BTC) no valor de R$ ${amount_in_brl}`);
-&nbsp;
-      return res.json(transactions)
-    } catch (error) {
-      console.log(error)
-      logger.error(error.message)
-      return res.status(error.status || <span class="branch-1 cbranch-no" title="branch not covered" >500)</span>.json({ error: error.message });
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!(Number(amount_in_brl) &gt; 0.01)) {
+<span class="cstat-no" title="statement not covered" >      return res.status(400).json({ error: 'Amount minimum is 0.01' });</span>
     }
+&nbsp;
+    const bitcoin = {
+      buy: Number(data.ticker.buy),
+      sell: Number(data.ticker.sell)
+    }
+&nbsp;
+    const transactions = await Transaction.create({
+      user_id: req.userId,
+      type: 'debit',
+      amount: Number(amount_in_brl),
+    })
+&nbsp;
+    const amountInBTC = Transaction.convertMoney({
+      type: 'BRL_TO_BTC',
+      amount: amount_in_brl,
+      quote: bitcoin.buy
+    });
+&nbsp;
+    transactions.dataValues.children = await Transaction.create({
+      user_id: req.userId,
+      transaction_id: transactions.id,
+      type: 'purchase',
+      amount: amountInBTC,
+      currency_type: 'BTC',
+      currency_purchase_value_in_brl: bitcoin.buy,
+      currency_liquidate_value_in_brl: bitcoin.sell
+    })
+&nbsp;
+    const user = await User.findByPk(req.userId)
+&nbsp;
+    await Queue.add(BuyMail.key, {
+      transaction: transactions,
+      user
+    });
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (process.env.NODE_ENV !== 'test') {
+<span class="cstat-no" title="statement not covered" >      logger.info(`${user.name} &lt;${user.email}&gt; comprou ${amountInBTC} bitcoins (BTC) no valor de R$ ${amount_in_brl}`);</span>
+    }
+&nbsp;
+    return res.json(transactions)
   }
 }
 &nbsp;
@@ -268,7 +256,7 @@ export default new BuyController();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Mar 12 2020 14:14:07 GMT-0300 (GMT-03:00)
+                at Thu Mar 12 2020 15:38:46 GMT-0300 (GMT-03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

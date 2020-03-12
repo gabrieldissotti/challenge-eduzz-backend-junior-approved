@@ -3,8 +3,10 @@ import './bootstrap';
 import server from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import Youch from 'youch';
 import swaggerUi from 'swagger-ui-express';
 import { resolve } from 'path';
+import 'express-async-errors';
 
 import './database';
 import routes from './routes';
@@ -22,6 +24,7 @@ class App {
 
     this.middlewares();
     this.routes();
+    this.exceptionHandler();
     this.jobs();
     this.logs()
   }
@@ -48,6 +51,23 @@ class App {
     if (process.env.NODE_ENV !== 'test') {
       this.server.use(morgan('combined', { stream: logger.stream }));
     }
+  }
+
+  exceptionHandler (): any {
+    this.server.use(async (err, req, res, next) => {
+      if (process.env.NODE_ENV !== 'test') {
+        console.log(err)
+        logger.error(err.message)
+      }
+
+      if (process.env.NODE_ENV === 'development') {
+        const errors = await new Youch(err, req).toJSON();
+
+        return res.status(err.status || 500).json(errors);
+      }
+
+      return res.status(err.status || 500).json({ error: 'Internal Server Error' });
+    });
   }
 }
 
