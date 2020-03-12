@@ -7,16 +7,17 @@ Contato: gabrieldnrodrigues@gmail.com
 1. [O Projeto](##Projeto)
 2. [Demonstração online](https://aws.eduzz.dissotti.com:3333)
 3. [Artefatos](##Artefatos)
-4. [Desafios](##Desafios)
-5. [Possíveis-Melhorias](##Possíveis-Melhorias)
-6. [Tecnologias e Métodos Utilizados](##Tecnologias-e-Métodos-Utilizados)
-7. [Detalhes da Execução das Tarefas](##Detalhes-da-Execução-das-Tarefas)
-8. [Como Rodar](##Como-Rodar)
-9. [Requisitos de Ambiente](##Requisitos-de-Ambiente)
-10. [Setup da Aplicação](##Setup-da-Aplicação)
-11. [Comandos Úteis para Desenvolvedores](##Comandos-Úteis-para-Desenvolvedores)
-12. [Rodar em produção](##Rodar-em-produção)
-13. [Considerações Finais](##Considerações-Finais)
+4. [Logs](###Logs)
+5. [Desafios](##Desafios)
+6. [Possíveis-Melhorias](##Possíveis-Melhorias)
+7. [Tecnologias e Métodos Utilizados](##Tecnologias-e-Métodos-Utilizados)
+8. [Detalhes da Execução das Tarefas](##Detalhes-da-Execução-das-Tarefas)
+9. [Como Rodar](##Como-Rodar)
+10. [Requisitos de Ambiente](##Requisitos-de-Ambiente)
+11. [Setup da Aplicação](##Setup-da-Aplicação)
+12. [Comandos Úteis para Desenvolvedores](##Comandos-Úteis-para-Desenvolvedores)
+13. [Rodar em produção](##Rodar-em-produção)
+14. [Considerações Finais](##Considerações-Finais)
 
 ## ✨ Projeto
 
@@ -34,6 +35,16 @@ O Projeto é uma API de investimento em bitcoins, possuí registro de usuários,
 - Diagrama Entidade Relacionamento:
 
 <img src="./docs/MODEL.png" style="display: block; margin: 0 auto;" />
+
+### Logs
+Para explorar os logs da aplicação no Dashboard [faça login na loggly](https://app.loggly.com/sso/oidc/initiate) e utilize as credênciais:
+
+```
+email: gabriel.rodrigues31@fatec.sp.gov.br
+senha: eduzz123456
+```
+> Essa conta possuí permissão de leitura dos logs
+
 
 ### Desafios
 - Criar a modelagem e um algoritimo otimizados que contemple a compra e venda de bitcoins foi a parte mais desafiadora.
@@ -68,6 +79,7 @@ Algumas possíveis melhorias à ser implementadas são:
 - Variáveis de Ambiente
 - Middlewares
 - Handlebars
+- Logs com Morgan, Winston e Loggly
 - Padronização de commits: [Commitzen](https://github.com/commitizen)
 - Workflow: [GitFlow](https://danielkummer.github.io/git-flow-cheatsheet/index.pt_BR.html)
 - Segurança:

@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { Request } from '../../middlewares/auth';
+import logger from '../../../logger';
 
 import Queue from '../../../lib/Queue';
 import BuyMail from '../../jobs/BuyMail';
@@ -49,9 +50,12 @@ class BuyController {
         user
       });
 
+      logger.info(`${user.name} <${user.email}> comprou ${amountInBTC} bitcoins (BTC) no valor de R$ ${amount_in_brl}`);
+
       return res.json(transactions)
     } catch (error) {
       console.log(error)
+      logger.error(error.message)
       return res.status(error.status || 500).json({ error: error.message });
     }
   }

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import logger from '../../../logger';
 import * as Yup from 'yup';
 
 import authConfig from '../../../config/auth';
@@ -47,6 +48,7 @@ class SessionController {
       });
     } catch (error) {
       console.log(error)
+      logger.error(error.message)
       return res.status(500).json({ error: error.message });
     }
   }

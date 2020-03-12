@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { Request } from '../../middlewares/auth';
 import { startOfDay, endOfDay } from 'date-fns';
+import logger from '../../../logger';
 
 import Sequelize, { Op } from 'sequelize';
 
@@ -38,6 +39,7 @@ class VolumeController {
       return res.json(response)
     } catch (error) {
       console.log(error)
+      logger.error(error.message)
       return res.status(500).json({ error: error.message });
     }
   }

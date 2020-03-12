@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as Yup from 'yup';
+import logger from '../../../logger';
 
 import User from '../../models/User';
 
@@ -30,6 +31,8 @@ class UserController {
 
       return res.json({ id, name, email });
     } catch (error) {
+      console.log(error)
+      logger.error(error.message)
       return res.status(400).json({ error: error.message });
     }
   }

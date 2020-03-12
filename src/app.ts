@@ -1,6 +1,7 @@
 import './bootstrap';
 
 import server from 'express';
+import morgan from 'morgan';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import { resolve } from 'path';
@@ -8,6 +9,7 @@ import { resolve } from 'path';
 import './database';
 import routes from './routes';
 import swaggerSpec from './config/swagger';
+import logger from './logger';
 
 import Queue from './lib/Queue';
 import UpdateCurrency from './app/jobs/UpdateCurrency';
@@ -21,6 +23,7 @@ class App {
     this.middlewares();
     this.routes();
     this.jobs();
+    this.logs()
   }
 
   private middlewares (): void {
@@ -39,6 +42,12 @@ class App {
 
   public jobs (): void {
     Queue.add(UpdateCurrency.key, {});
+  }
+
+  public logs (): void {
+    if (process.env.NODE_ENV !== 'test') {
+      this.server.use(morgan('combined', { stream: logger.stream }));
+    }
   }
 }
 

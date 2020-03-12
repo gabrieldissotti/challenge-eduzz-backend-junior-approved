@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { Request } from '../../middlewares/auth';
+import logger from '../../../logger';
 import errors from 'errors';
 
 import Queue from '../../../lib/Queue';
@@ -51,7 +52,7 @@ class SellController {
         currencyType: 'BTC'
       });
 
-      if (btcBalance < sellAmount) {
+      if (Number(btcBalance) < Number(sellAmount)) {
         throw new errors.Http400Error({
           message: 'Insufficient BTC amount to sell'
         })
@@ -140,9 +141,12 @@ class SellController {
         user
       });
 
+      logger.info(`${user.name} <${user.email}> vendeu ${response.total_liquidated_amount} bitcoins (BTC) no valor de R$ ${response.total_credited_amount}`);
+
       return res.json(response)
     } catch (error) {
       console.log(error)
+      logger.error(error.message)
       return res.status(error.status || 500).json({ error: error.message });
     }
   }

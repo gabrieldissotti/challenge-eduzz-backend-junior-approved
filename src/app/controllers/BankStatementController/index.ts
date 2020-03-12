@@ -3,6 +3,7 @@ import { Request } from '../../middlewares/auth';
 import * as Yup from 'yup';
 import { startOfDay, endOfDay } from 'date-fns';
 import { Op } from 'sequelize';
+import logger from '../../../logger';
 
 import Transaction from '../../models/Transaction';
 
@@ -46,7 +47,7 @@ class BankStatementController {
           ...(end_date && !start_date
             ? { date: { [Op.lte]: endOfDay(new Date(end_date)) } }
             : ''),
-          ...(end_date && end_date
+          ...(start_date && end_date
             ? {
               date: {
                 [Op.between]: [
@@ -62,6 +63,7 @@ class BankStatementController {
       return res.json(transactions)
     } catch (error) {
       console.log(error)
+      logger.error(error.message)
       return res.status(500).json({ error: error.message });
     }
   }

@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { Request } from '../../middlewares/auth';
+import logger from '../../../logger';
 import * as Yup from 'yup';
 
 import Transaction from '../../models/Transaction';
@@ -40,9 +41,12 @@ class CreditController {
 
       await Queue.add(DepositMail.key, { transaction, user });
 
+      logger.info(`${user.name} <${user.email}> fez um depósito no valor de R$ ${transaction.amount}`);
+
       return res.json(transaction);
     } catch (error) {
       console.log(error)
+      logger.error(error.message)
       return res.status(500).json({ error: error.message });
     }
   }
