@@ -162,6 +162,15 @@ yarn sequelize migration:create --name=migration-name
 
 # undo migrations
 yarn sequelize db:migrate:undo:all
+
+# run tests
+yarn test
+
+# run tests and update coverage
+yarn test:coverage
+
+# run tests watching
+yarn test:watch
 ```
 
 ## Rodar em produção

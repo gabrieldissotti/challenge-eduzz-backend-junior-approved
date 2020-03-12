@@ -12,7 +12,8 @@
     "postbuild": "cp -R ./src/app/views ./dist/app",
     "lint": "yarn eslint --fix src --ext .ts",
     "pretest": "NODE_ENV=test yarn sequelize db:migrate",
-    "test": "NODE_ENV=test yarn jest --coverage --forceExit",
+    "test": "NODE_ENV=test yarn jest --forceExit",
+    "test:coverage": "NODE_ENV=test yarn jest --coverage --forceExit",
     "posttest": "NODE_ENV=test yarn sequelize db:migrate:undo:all",
     "test:watch": "NODE_ENV=test yarn jest --watchAll"
   },
