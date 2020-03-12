@@ -8,49 +8,43 @@ import User from '../../models/User';
 
 class SessionController {
   async store (req: Request, res: Response): Promise<Response> {
-    try {
-      const schema = Yup.object().shape({
-        email: Yup.string()
-          .email()
-          .required(),
-        password: Yup.string().required(),
+    const schema = Yup.object().shape({
+      email: Yup.string()
+        .email()
+        .required(),
+      password: Yup.string().required(),
+    });
+
+    await schema.validate(req.body).catch((err) => {
+      return res.status(400).json({ error: err.message });
+    })
+
+    const { email, password } = req.body;
+
+    const user = await User.findOne({
+      where: { email },
+    });
+
+    if (!user) return res.status(401).json({ error: 'User not found' });
+
+    if (!(await user.checkPassword(password))) {
+      return res.status(401).json({
+        error: 'Password does not match'
       });
-
-      await schema.validate(req.body).catch((err) => {
-        return res.status(400).json({ error: err.message || 'Validation fails' });
-      })
-
-      const { email, password } = req.body;
-
-      const user = await User.findOne({
-        where: { email },
-      });
-
-      if (!user) return res.status(401).json({ error: 'User not found' });
-
-      if (!(await user.checkPassword(password))) {
-        return res.status(401).json({
-          error: 'Password does not match'
-        });
-      }
-
-      const { id, name } = user;
-
-      return res.json({
-        user: {
-          id,
-          name,
-          email,
-        },
-        token: jwt.sign({ id }, authConfig.secret, {
-          expiresIn: authConfig.expiresIn,
-        }),
-      });
-    } catch (error) {
-      console.log(error)
-      logger.error(error.message)
-      return res.status(500).json({ error: error.message });
     }
+
+    const { id, name } = user;
+
+    return res.json({
+      user: {
+        id,
+        name,
+        email,
+      },
+      token: jwt.sign({ id }, authConfig.secret, {
+        expiresIn: authConfig.expiresIn,
+      }),
+    });
   }
 }
 

@@ -7,7 +7,11 @@ module.exports = {
   bail: true,
   clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ['src/app/**/*.ts'],
+  collectCoverageFrom: [
+    'src/app/middlewares/**/*.ts',
+    'src/app/models/**/*.ts',
+    'src/app/controllers/**/*.ts',
+  ],
   coverageDirectory: './__tests__/coverage',
 
   coverageReporters: [
