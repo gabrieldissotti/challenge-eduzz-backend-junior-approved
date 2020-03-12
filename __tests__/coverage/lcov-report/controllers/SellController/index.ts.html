@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.36% </span>
+                <span class="strong">74% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>41/53</span>
+                <span class='fraction'>37/50</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">70.73% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>33/44</span>
+                <span class='fraction'>29/41</span>
             </div>
         
             
@@ -212,11 +212,7 @@
 <a name='L153'></a><a href='#L153'>153</a>
 <a name='L154'></a><a href='#L154'>154</a>
 <a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a>
-<a name='L158'></a><a href='#L158'>158</a>
-<a name='L159'></a><a href='#L159'>159</a>
-<a name='L160'></a><a href='#L160'>160</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">77x</span>
+<a name='L156'></a><a href='#L156'>156</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">77x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
@@ -233,7 +229,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -364,13 +359,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -390,146 +382,142 @@ import MercadoBitcoinApi from '../../services/mercadobitcoin';
 &nbsp;
 class SellController {
   async store (req: Request, res: Response): Promise&lt;Response&gt; {
-    try {
-      const { data } = await MercadoBitcoinApi.get('/BTC/ticker/')
-      const { amount_in_btc: sellAmount } = req.body;
+    const { data } = await MercadoBitcoinApi.get('/BTC/ticker/')
+    const { amount_in_btc: sellAmount } = req.body;
 &nbsp;
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!(Number(sellAmount) &gt; 0.00000001)) {
-<span class="cstat-no" title="statement not covered" >        return res.status(400).json({ error: 'Amount minimum is 0.00000001' });</span>
-      }
-&nbsp;
-      const bitcoin = {
-        buy: Number(data.ticker.buy),
-        sell: Number(data.ticker.sell)
-      }
-&nbsp;
-      const purchases = await Transaction.findAll({
-        where: {
-          user_id: req.userId,
-          type: 'purchase',
-          currency_type: 'BTC',
-          status: 'normal'
-        },
-        include: [
-          {
-            model: Transaction,
-            as: 'children',
-          },
-          {
-            model: Transaction,
-            as: 'parent',
-          },
-        ]
-      })
-&nbsp;
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!purchases) {
-<span class="cstat-no" title="statement not covered" >        throw new errors.Http400Error({</span>
-          message: 'User doesn\'t have bitcoin investments'
-        })
-      }
-&nbsp;
-      const btcBalance = await Transaction.getBalance({
-        user_id: req.userId,
-        currencyType: 'BTC'
-      });
-&nbsp;
-      if (Number(btcBalance) &lt; Number(sellAmount)) {
-        throw new errors.Http400Error({
-          message: 'Insufficient BTC amount to sell'
-        })
-      }
-&nbsp;
-      const toLiquidate = purchases.reduce(<span class="fstat-no" title="function not covered" >(a</span>ccumulator, current) =&gt; {
-<span class="cstat-no" title="statement not covered" >        if (accumulator &amp;&amp; Number(accumulator.total_amount) &lt; Number(sellAmount)) {</span>
-<span class="cstat-no" title="statement not covered" >          return {</span>
-            total_amount: Number(accumulator.total_amount) + Number(current.amount),
-            rows: [
-              ...accumulator.rows,
-              current.dataValues
-            ]
-          }
-        }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        return accumulator;</span>
-      }, {
-        total_amount: 0,
-        rows: []
-      });
-&nbsp;
-      await Transaction.update({
-        status: 'liquidated'
-      }, {
-        where: {
-          id: toLiquidate.rows.map(<span class="fstat-no" title="function not covered" >tr</span>ansaction =&gt; <span class="cstat-no" title="statement not covered" >transaction.id)</span>
-        }
-      })
-&nbsp;
-      const creditLiquidations = toLiquidate.rows.map(<span class="fstat-no" title="function not covered" >tr</span>ansaction =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
-        type: 'credit',
-        user_id: req.userId,
-        transaction_id: transaction.id,
-        amount: Transaction.convertMoney({
-          type: 'BTC_TO_BRL',
-          amount: Number(transaction.amount),
-          quote: bitcoin.sell
-        })
-      }))
-&nbsp;
-      const credited = await Transaction.bulkCreate(creditLiquidations, { validate: true })
-&nbsp;
-      const fullLiquidationAmount = Number(toLiquidate.total_amount);
-&nbsp;
-      let reinvestedTransaction;
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (fullLiquidationAmount &gt; Number(sellAmount)) {
-        const brlReceived = <span class="cstat-no" title="statement not covered" >Transaction.convertMoney({</span>
-          type: 'BTC_TO_BRL',
-          amount: fullLiquidationAmount - Number(sellAmount),
-          quote: bitcoin.sell
-        });
-&nbsp;
-        const debitTransaction = <span class="cstat-no" title="statement not covered" >await Transaction.create({</span>
-          type: 'debit',
-          user_id: req.userId,
-          amount: Number(brlReceived),
-          status: 'liquidated'
-        })
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        reinvestedTransaction = await Transaction.create({</span>
-          type: 'purchase',
-          transaction_id: debitTransaction.id,
-          currency_type: 'BTC',
-          user_id: req.userId,
-          amount: Transaction.convertMoney({
-            type: 'BRL_TO_BTC',
-            amount: Number(brlReceived),
-            quote: bitcoin.buy
-          })
-        })
-      }
-&nbsp;
-      const response = {
-        total_liquidated_amount: toLiquidate.rows.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, actual) =&gt; <span class="cstat-no" title="statement not covered" >Number(sum) + Number(actual.amount),</span> 0).toFixed(8),
-        total_credited_amount: credited.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, actual) =&gt; <span class="cstat-no" title="statement not covered" >Number(sum) + Number(actual.amount),</span> 0).toFixed(8),
-        liquidated: toLiquidate.rows,
-        credited,
-        reinvested: reinvestedTransaction,
-      }
-&nbsp;
-      const user = await User.findByPk(req.userId)
-&nbsp;
-      await Queue.add(SellMail.key, {
-        transactions: response,
-        user
-      });
-&nbsp;
-      logger.info(`${user.name} &lt;${user.email}&gt; vendeu ${response.total_liquidated_amount} bitcoins (BTC) no valor de R$ ${response.total_credited_amount}`);
-&nbsp;
-      return res.json(response)
-    } catch (error) {
-      console.log(error)
-      logger.error(error.message)
-      return res.status(error.status || <span class="branch-1 cbranch-no" title="branch not covered" >500)</span>.json({ error: error.message });
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!(Number(sellAmount) &gt; 0.00000001)) {
+<span class="cstat-no" title="statement not covered" >      return res.status(400).json({ error: 'Amount minimum is 0.00000001' });</span>
     }
+&nbsp;
+    const bitcoin = {
+      buy: Number(data.ticker.buy),
+      sell: Number(data.ticker.sell)
+    }
+&nbsp;
+    const purchases = await Transaction.findAll({
+      where: {
+        user_id: req.userId,
+        type: 'purchase',
+        currency_type: 'BTC',
+        status: 'normal'
+      },
+      include: [
+        {
+          model: Transaction,
+          as: 'children',
+        },
+        {
+          model: Transaction,
+          as: 'parent',
+        },
+      ]
+    })
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!purchases) {
+<span class="cstat-no" title="statement not covered" >      throw new errors.Http400Error({</span>
+        message: 'User doesn\'t have bitcoin investments'
+      })
+    }
+&nbsp;
+    const btcBalance = await Transaction.getBalance({
+      user_id: req.userId,
+      currencyType: 'BTC'
+    });
+&nbsp;
+    if (Number(btcBalance) &lt; Number(sellAmount)) {
+      throw new errors.Http400Error({
+        message: 'Insufficient BTC amount to sell'
+      })
+    }
+&nbsp;
+    const toLiquidate = purchases.reduce(<span class="fstat-no" title="function not covered" >(a</span>ccumulator, current) =&gt; {
+<span class="cstat-no" title="statement not covered" >      if (accumulator &amp;&amp; Number(accumulator.total_amount) &lt; Number(sellAmount)) {</span>
+<span class="cstat-no" title="statement not covered" >        return {</span>
+          total_amount: Number(accumulator.total_amount) + Number(current.amount),
+          rows: [
+            ...accumulator.rows,
+            current.dataValues
+          ]
+        }
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return accumulator;</span>
+    }, {
+      total_amount: 0,
+      rows: []
+    });
+&nbsp;
+    await Transaction.update({
+      status: 'liquidated'
+    }, {
+      where: {
+        id: toLiquidate.rows.map(<span class="fstat-no" title="function not covered" >tr</span>ansaction =&gt; <span class="cstat-no" title="statement not covered" >transaction.id)</span>
+      }
+    })
+&nbsp;
+    const creditLiquidations = toLiquidate.rows.map(<span class="fstat-no" title="function not covered" >tr</span>ansaction =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+      type: 'credit',
+      user_id: req.userId,
+      transaction_id: transaction.id,
+      amount: Transaction.convertMoney({
+        type: 'BTC_TO_BRL',
+        amount: Number(transaction.amount),
+        quote: bitcoin.sell
+      })
+    }))
+&nbsp;
+    const credited = await Transaction.bulkCreate(creditLiquidations, { validate: true })
+&nbsp;
+    const fullLiquidationAmount = Number(toLiquidate.total_amount);
+&nbsp;
+    let reinvestedTransaction;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (fullLiquidationAmount &gt; Number(sellAmount)) {
+      const brlReceived = <span class="cstat-no" title="statement not covered" >Transaction.convertMoney({</span>
+        type: 'BTC_TO_BRL',
+        amount: fullLiquidationAmount - Number(sellAmount),
+        quote: bitcoin.sell
+      });
+&nbsp;
+      const debitTransaction = <span class="cstat-no" title="statement not covered" >await Transaction.create({</span>
+        type: 'debit',
+        user_id: req.userId,
+        amount: Number(brlReceived),
+        status: 'liquidated'
+      })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      reinvestedTransaction = await Transaction.create({</span>
+        type: 'purchase',
+        transaction_id: debitTransaction.id,
+        currency_type: 'BTC',
+        user_id: req.userId,
+        amount: Transaction.convertMoney({
+          type: 'BRL_TO_BTC',
+          amount: Number(brlReceived),
+          quote: bitcoin.buy
+        })
+      })
+    }
+&nbsp;
+    const response = {
+      total_liquidated_amount: toLiquidate.rows.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, actual) =&gt; <span class="cstat-no" title="statement not covered" >Number(sum) + Number(actual.amount),</span> 0).toFixed(8),
+      total_credited_amount: credited.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, actual) =&gt; <span class="cstat-no" title="statement not covered" >Number(sum) + Number(actual.amount),</span> 0).toFixed(8),
+      liquidated: toLiquidate.rows,
+      credited,
+      reinvested: reinvestedTransaction,
+    }
+&nbsp;
+    const user = await User.findByPk(req.userId)
+&nbsp;
+    await Queue.add(SellMail.key, {
+      transactions: response,
+      user
+    });
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (process.env.NODE_ENV !== 'test') {
+<span class="cstat-no" title="statement not covered" >      logger.info(`${user.name} &lt;${user.email}&gt; vendeu ${response.total_liquidated_amount} bitcoins (BTC) no valor de R$ ${response.total_credited_amount}`);</span>
+    }
+&nbsp;
+    return res.json(response)
   }
 }
 &nbsp;
@@ -541,7 +529,7 @@ export default new SellController();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Mar 12 2020 14:14:07 GMT-0300 (GMT-03:00)
+                at Thu Mar 12 2020 15:38:46 GMT-0300 (GMT-03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

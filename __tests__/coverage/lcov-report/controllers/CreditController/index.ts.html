@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.29% </span>
+                <span class="strong">71.05% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>28/41</span>
+                <span class='fraction'>27/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44.44% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/18</span>
+                <span class='fraction'>9/18</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76% </span>
+                <span class="strong">81.82% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/25</span>
+                <span class='fraction'>18/22</span>
             </div>
         
             
@@ -108,11 +108,7 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">55x</span>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">55x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
@@ -125,7 +121,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,13 +151,10 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -180,44 +172,40 @@ import DepositMail from '../../jobs/DepositMail';
 &nbsp;
 class CreditController {
   async store (req: Request, res: Response): Promise&lt;Response&gt; {
-    try {
-      const schema = Yup.object().shape({
-        amount: Yup.number()
-          .required(),
-      });
+    const schema = Yup.object().shape({
+      amount: Yup.number()
+        .required(),
+    });
 &nbsp;
-      await schema.validate(req.body).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
-<span class="cstat-no" title="statement not covered" >        return res.status(400).json({ error: err.message || 'Validation fails' });</span>
-      })
+    await schema.validate(req.body).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
+<span class="cstat-no" title="statement not covered" >      return res.status(400).json({ error: err.message });</span>
+    })
 &nbsp;
-      const { amount } = req.body;
+    const { amount } = req.body;
 &nbsp;
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!(Number(amount) &gt; 0.01)) {
-<span class="cstat-no" title="statement not covered" >        return res.status(400).json({ error: 'Amount minimum is 0.01' });</span>
-      }
-&nbsp;
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!(Number(amount) &lt; 99999999.99)) {
-<span class="cstat-no" title="statement not covered" >        return res.status(400).json({ error: 'Amount maximum is 99999999.99' });</span>
-      }
-&nbsp;
-      const transaction = await Transaction.create({
-        user_id: req.userId,
-        type: 'credit',
-        amount: Number(amount),
-      })
-&nbsp;
-      const user = await User.findByPk(req.userId)
-&nbsp;
-      await Queue.add(DepositMail.key, { transaction, user });
-&nbsp;
-      logger.info(`${user.name} &lt;${user.email}&gt; fez um depósito no valor de R$ ${transaction.amount}`);
-&nbsp;
-      return res.json(transaction);
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.log(error)</span>
-<span class="cstat-no" title="statement not covered" >      logger.error(error.message)</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(500).json({ error: error.message });</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!(Number(amount) &gt; 0.01)) {
+<span class="cstat-no" title="statement not covered" >      return res.status(400).json({ error: 'Amount minimum is 0.01' });</span>
     }
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!(Number(amount) &lt; 99999999.99)) {
+<span class="cstat-no" title="statement not covered" >      return res.status(400).json({ error: 'Amount maximum is 99999999.99' });</span>
+    }
+&nbsp;
+    const transaction = await Transaction.create({
+      user_id: req.userId,
+      type: 'credit',
+      amount: Number(amount),
+    })
+&nbsp;
+    const user = await User.findByPk(req.userId)
+&nbsp;
+    await Queue.add(DepositMail.key, { transaction, user });
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (process.env.NODE_ENV !== 'test') {
+<span class="cstat-no" title="statement not covered" >      logger.info(`${user.name} &lt;${user.email}&gt; fez um depósito no valor de R$ ${transaction.amount}`);</span>
+    }
+&nbsp;
+    return res.json(transaction);
   }
 }
 &nbsp;
@@ -229,7 +217,7 @@ export default new CreditController();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Mar 12 2020 14:14:07 GMT-0300 (GMT-03:00)
+                at Thu Mar 12 2020 15:38:46 GMT-0300 (GMT-03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

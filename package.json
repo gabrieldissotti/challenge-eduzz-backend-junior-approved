@@ -12,8 +12,7 @@
     "postbuild": "cp -R ./src/app/views ./dist/app",
     "lint": "yarn eslint --fix src --ext .ts",
     "pretest": "NODE_ENV=test yarn sequelize db:migrate",
-    "test": "NODE_ENV=test yarn jest --forceExit",
-    "test:coverage": "NODE_ENV=test yarn jest --coverage --forceExit",
+    "test": "NODE_ENV=test yarn jest",
     "posttest": "NODE_ENV=test yarn sequelize db:migrate:undo:all",
     "test:watch": "NODE_ENV=test yarn jest --watchAll"
   },
@@ -42,6 +41,7 @@
     "dotenv": "^8.2.0",
     "errors": "^0.3.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "express-handlebars": "^3.1.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
@@ -56,6 +56,7 @@
     "swagger-ui-express": "^4.1.3",
     "winston": "^3.2.1",
     "winston-loggly-bulk": "^3.0.1",
+    "youch": "^2.0.10",
     "yup": "^0.28.3"
   },
   "devDependencies": {
