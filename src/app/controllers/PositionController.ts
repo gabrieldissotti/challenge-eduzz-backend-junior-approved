@@ -107,7 +107,8 @@ class PositionController {
         offset,
         where: {
           type: 'purchase',
-          user_id: req.userId
+          user_id: req.userId,
+          status: 'normal'
         },
         include: [
           {
