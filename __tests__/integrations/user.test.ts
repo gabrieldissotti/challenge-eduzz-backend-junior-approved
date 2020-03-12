@@ -16,16 +16,16 @@ describe('User Controller', () => {
     });
 
     it('shouldn\'t able to register user with already existing email', async () => {
-      const user = {
-        email: 'devinvestcoin@gmail.com',
+      const { email } = await factory.create('User', {
         password: '123456',
-      };
-
-      await factory.create('User', user)
+      })
 
       const response = await request(app)
         .post('/users')
-        .send(user);
+        .send({
+          email,
+          password: '123456'
+        });
 
       expect(response.status).toBe(400)
     });

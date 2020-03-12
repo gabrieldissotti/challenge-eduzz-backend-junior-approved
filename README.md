@@ -7,43 +7,56 @@ Contato: gabrieldnrodrigues@gmail.com
 1. [O Projeto](##Projeto)
 2. [Demonstração online](https://aws.eduzz.dissotti.com:3333)
 3. [Artefatos](##Artefatos)
-4. [Desafios](##Desafios)
-5. [Possíveis-Melhorias](##Possíveis-Melhorias)
-6. [Tecnologias e Métodos Útilizados](##Tecnologias-e-Métodos-Útilizados)
-7. [Detalhes da Execução das Tarefas](##Detalhes-da-Execução-das-Tarefas)
-8. [Como Rodar](##Como-Rodar)
-9. [Requisitos de Ambiente](##Requisitos-de-Ambiente)
-10. [Setup da Aplicação](##Setup-da-Aplicação)
-11. [Comandos Úteis para Desenvolvedores](##Comandos-Úteis-para-Desenvolvedores)
-12. [Rodar em produção](##Rodar-em-produção)
-13. [Considerações Finais](##Considerações-Finais)
+4. [Logs](###Logs)
+5. [Desafios](##Desafios)
+6. [Possíveis-Melhorias](##Possíveis-Melhorias)
+7. [Tecnologias e Métodos Utilizados](##Tecnologias-e-Métodos-Utilizados)
+8. [Detalhes da Execução das Tarefas](##Detalhes-da-Execução-das-Tarefas)
+9. [Como Rodar](##Como-Rodar)
+10. [Requisitos de Ambiente](##Requisitos-de-Ambiente)
+11. [Setup da Aplicação](##Setup-da-Aplicação)
+12. [Comandos Úteis para Desenvolvedores](##Comandos-Úteis-para-Desenvolvedores)
+13. [Rodar em produção](##Rodar-em-produção)
+14. [Considerações Finais](##Considerações-Finais)
 
 ## ✨ Projeto
 
 O Projeto é uma API de investimento em bitcoins, possuí registro de usuários, login, realização de depósitos, consulta de saldo, cotação, compra e venda de bitcoins, posição dos investimentos, extrato bancário e histórico de cotação das últimas 24 horas e volume de compras e vendas do dia. [mais informações](./docs/Challenge.md)
 
-- Tempo levado para finalizar: 31h 39m [detalhes](##Detalhes-da-Execução-das-Tarefas)
+- Tempo levado para finalizar: 35h 39m [detalhes](##Detalhes-da-Execução-das-Tarefas)
 
 ### [Demonstração online](https://aws.eduzz.dissotti.com:3333)
 
 ### Artefatos
 - A documentação da API pode ser visualizada no seu próprio link: [aws.eduzz.dissotti.com:3333](https://aws.eduzz.dissotti.com:3333)
 
+- [Cobertura dos Testes](https://aws.eduzz.dissotti.com:3333/coverage)
+
 - Diagrama Entidade Relacionamento:
 
 <img src="./docs/MODEL.png" style="display: block; margin: 0 auto;" />
 
+### Logs
+Para explorar os logs da aplicação no Dashboard [faça login na loggly](https://app.loggly.com/sso/oidc/initiate) e utilize as credênciais:
+
+```
+email: gabriel.rodrigues31@fatec.sp.gov.br
+senha: eduzz123456
+```
+> Essa conta possuí permissão de leitura dos logs
+
+
 ### Desafios
-- Criar a modelagem e um algorítimo otimizados que comtemple a compra e venda de bitcoins foi a parte mais desafiadora.
+- Criar a modelagem e um algoritimo otimizados que contemple a compra e venda de bitcoins foi a parte mais desafiadora.
 - Utilizar typescript em uma API completa em Node.js, eu já havia utilizado antes mas apenas para uma API de middleware simples, mas nessa precisei utilizar models, jobs e migrations e com certeza isso me agregou muito conhecimento.
 
 ### Possíveis Melhorias
 
 Algumas possíveis melhorias à ser implementadas são:
-- Adicionar cacheamento com Redis no endpoint de posições de investimento, ao liquidar ou criar um novo investimento eu atualizaria a chave do cache.
+- Adicionar cacheamento com Redis no endpoint de posições de investimento, ao liquidar ou criar um novo investimento o cache seria apagado e atualizado na próxima requisição, isso também poderia ser feito no endpoint de histórico de cotação do bitcoin.
 - Adicionar transações do sequelize para que se houver erros durante uma compra, o sistema reverter quaisquer alterações em banco feitas durante requisição.
 
-### Tecnologias e Métodos Útilizados
+### Tecnologias e Métodos Utilizados
 
 - Node.js
 - Express
@@ -51,6 +64,7 @@ Algumas possíveis melhorias à ser implementadas são:
 - TypeScript
 - Docker
 - MariaDB
+- ESlint / Prettier
 - Sequelize ORM
   - Migrations
 - Swagger
@@ -65,18 +79,21 @@ Algumas possíveis melhorias à ser implementadas são:
 - Variáveis de Ambiente
 - Middlewares
 - Handlebars
+- Logs com Morgan, Winston e Loggly
 - Padronização de commits: [Commitzen](https://github.com/commitizen)
 - Workflow: [GitFlow](https://danielkummer.github.io/git-flow-cheatsheet/index.pt_BR.html)
 - Segurança:
   - CORS
   - Hash de senhas
   - Autenticação por JWT
-  - Validações de requisições
+  - Validação de requisições
 - Performance/Desempenho
   - Redis (utilizado com Bee Queue para processos em segundo plano com filas)
   - Paginação de resultados de consulta
 
 ## Detalhes da Execução das Tarefas
+
+> Tempo levado para finalizar: 35h 39m
 
 - Análise e Modelagem do Projeto - 3h 15
 - Criar migrations e models - 1h 40
@@ -84,17 +101,17 @@ Algumas possíveis melhorias à ser implementadas são:
 - Configurar envio de emails e enviar email ao criar depósito - 1h 16m
 - Criar endpoint para exibir histórico do bitcoin - 2h 12m
 - Criar endpoint para exibir o volume de compras e vendas BTC no dia - 1h 11m
-- Criar enfpoint para exibir extrato - 53m
+- Criar endpoint para exibir extrato - 53m
 - Aprimorar método de liquidação - 1h 39m
 - Criar endpoint para venda de bitcoin - 5h 18m
 - Criar API para exibir posições de investimentos - 2h 31m
 - Criar endpoint para obter saldo do usuário logado - 2h 9m
 - Enviar email para o usuário ao finalizar compra - 20m
 - Criar API para comprar bitcoins - 2h 10m
-- Criar API para obter cotalção do bitcoin - 51m
+- Criar API para obter cotação do bitcoin - 51m
 - Criar endpoint de depósito - 52m
 - Criar endpoints de cadastro de login com JWT - 42m
-- Aprimorar Projeto - 2h 48m
+- Aprimorar Projeto - 6h 48m
 
 ## Como Rodar
 
@@ -147,6 +164,15 @@ yarn sequelize migration:create --name=migration-name
 
 # undo migrations
 yarn sequelize db:migrate:undo:all
+
+# run tests
+yarn test
+
+# run tests and update coverage
+yarn test:coverage
+
+# run tests watching
+yarn test:watch
 ```
 
 ## Rodar em produção
