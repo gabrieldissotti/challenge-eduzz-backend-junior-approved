@@ -5,7 +5,7 @@ Contato: gabrieldnrodrigues@gmail.com
 ## :scroll: Sumário
 
 1. [O Projeto](##Projeto)
-2. [Demonstração online](http://aws.eduzz.dissotti.com:3333)
+2. [Demonstração online](https://aws.eduzz.dissotti.com:3333)
 3. [Artefatos](##Artefatos)
 4. [Desafios](##Desafios)
 5. [Possíveis-Melhorias](##Possíveis-Melhorias)
@@ -24,10 +24,10 @@ O Projeto é uma API de investimento em bitcoins, possuí registro de usuários,
 
 - Tempo levado para finalizar: 31h 39m [detalhes](##Detalhes-da-Execução-das-Tarefas)
 
-### [Demonstração online](http://aws.eduzz.dissotti.com:3333)
+### [Demonstração online](https://aws.eduzz.dissotti.com:3333)
 
 ### Artefatos
-- A documentação da API pode ser visualizada no seu próprio link: [aws.eduzz.dissotti.com:3333](http://aws.eduzz.dissotti.com:3333)
+- A documentação da API pode ser visualizada no seu próprio link: [aws.eduzz.dissotti.com:3333](https://aws.eduzz.dissotti.com:3333)
 
 - Diagrama Entidade Relacionamento:
 
