@@ -4,20 +4,20 @@ Contato: gabrieldnrodrigues@gmail.com
 
 ## :scroll: Sumário
 
-1. [O Projeto](##Projeto)
+1. [O Projeto](#Projeto)
 2. [Demonstração online](https://aws.eduzz.dissotti.com:3333)
-3. [Artefatos](##Artefatos)
-4. [Logs](###Logs)
-5. [Desafios](##Desafios)
-6. [Possíveis-Melhorias](##Possíveis-Melhorias)
-7. [Tecnologias e Métodos Utilizados](##Tecnologias-e-Métodos-Utilizados)
-8. [Detalhes da Execução das Tarefas](##Detalhes-da-Execução-das-Tarefas)
-9. [Como Rodar](##Como-Rodar)
-10. [Requisitos de Ambiente](##Requisitos-de-Ambiente)
-11. [Setup da Aplicação](##Setup-da-Aplicação)
-12. [Comandos Úteis para Desenvolvedores](##Comandos-Úteis-para-Desenvolvedores)
-13. [Rodar em produção](##Rodar-em-produção)
-14. [Considerações Finais](##Considerações-Finais)
+3. [Artefatos](#Artefatos)
+4. [Logs](#Logs)
+5. [Desafios](#Desafios)
+6. [Possíveis-Melhorias](#Possíveis-Melhorias)
+7. [Tecnologias e Métodos Utilizados](#Tecnologias-e-Métodos-Utilizados)
+8. [Detalhes da Execução das Tarefas](#Detalhes-da-Execução-das-Tarefas)
+9. [Como Rodar](#Como-Rodar)
+10. [Requisitos de Ambiente](#Requisitos-de-Ambiente)
+11. [Setup da Aplicação](#Setup-da-Aplicação)
+12. [Comandos Úteis para Desenvolvedores](#Comandos-Úteis-para-Desenvolvedores)
+13. [Rodar em produção](#Rodar-em-produção)
+14. [Considerações Finais](#Considerações-Finais)
 
 ## ✨ Projeto
 
