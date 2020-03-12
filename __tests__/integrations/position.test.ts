@@ -13,16 +13,16 @@ describe('Position Controller', () => {
     });
 
     it('should be able to show positions when user is authenticated', async () => {
-      const data = {
-        email: 'devinvestcoin4@gmail.com',
+      const { email } = await factory.create('User', {
         password: '123456'
-      };
-
-      await factory.create('User', data)
+      })
 
       const authResponse = await request(app)
         .post('/sessions')
-        .send(data);
+        .send({
+          email,
+          password: '123456'
+        });
 
       expect(authResponse.status).toBe(200)
 
