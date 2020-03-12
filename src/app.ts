@@ -66,7 +66,7 @@ class App {
         return res.status(err.status || 500).json(errors);
       }
 
-      return res.status(err.status || 500).json({ error: 'Internal Server Error' });
+      return res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
     });
   }
 }
