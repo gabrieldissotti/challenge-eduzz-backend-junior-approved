@@ -1,4 +1,8 @@
-require('../bootstrap');
+try {
+  require('../bootstrap.ts');
+} catch (error) {
+  require('../bootstrap.js');
+}
 
 module.exports = {
   dialect: process.env.DB_DIALECT || 'mysql',
