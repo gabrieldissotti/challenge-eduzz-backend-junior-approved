@@ -23,7 +23,7 @@ Contato: gabrieldnrodrigues@gmail.com
 
 O Projeto é uma API de investimento em bitcoins, possuí registro de usuários, login, realização de depósitos, consulta de saldo, cotação, compra e venda de bitcoins, posição dos investimentos, extrato bancário e histórico de cotação das últimas 24 horas e volume de compras e vendas do dia. [mais informações](./docs/Challenge.md)
 
-- Tempo levado para finalizar: 31h 39m [detalhes](##Detalhes-da-Execução-das-Tarefas)
+- Tempo levado para finalizar: 35h 39m [detalhes](##Detalhes-da-Execução-das-Tarefas)
 
 ### [Demonstração online](https://aws.eduzz.dissotti.com:3333)
 
@@ -93,6 +93,8 @@ Algumas possíveis melhorias à ser implementadas são:
 
 ## Detalhes da Execução das Tarefas
 
+> Tempo levado para finalizar: 35h 39m
+
 - Análise e Modelagem do Projeto - 3h 15
 - Criar migrations e models - 1h 40
 - Estruturar Projeto - 1h 53m
@@ -109,7 +111,7 @@ Algumas possíveis melhorias à ser implementadas são:
 - Criar API para obter cotação do bitcoin - 51m
 - Criar endpoint de depósito - 52m
 - Criar endpoints de cadastro de login com JWT - 42m
-- Aprimorar Projeto - 2h 48m
+- Aprimorar Projeto - 6h 48m
 
 ## Como Rodar
 
