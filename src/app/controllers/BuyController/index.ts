@@ -16,6 +16,10 @@ class BuyController {
       const { data } = await MercadoBitcoinApi.get('/BTC/ticker/')
       const { amount_in_brl } = req.body;
 
+      if (!(Number(amount_in_brl) > 0.01)) {
+        return res.status(400).json({ error: 'Amount minimum is 0.01' });
+      }
+
       const bitcoin = {
         buy: Number(data.ticker.buy),
         sell: Number(data.ticker.sell)

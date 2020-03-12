@@ -17,6 +17,10 @@ class SellController {
       const { data } = await MercadoBitcoinApi.get('/BTC/ticker/')
       const { amount_in_btc: sellAmount } = req.body;
 
+      if (!(Number(sellAmount) > 0.00000001)) {
+        return res.status(400).json({ error: 'Amount minimum is 0.00000001' });
+      }
+
       const bitcoin = {
         buy: Number(data.ticker.buy),
         sell: Number(data.ticker.sell)
