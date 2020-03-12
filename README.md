@@ -29,6 +29,8 @@ O Projeto é uma API de investimento em bitcoins, possuí registro de usuários,
 ### Artefatos
 - A documentação da API pode ser visualizada no seu próprio link: [aws.eduzz.dissotti.com:3333](https://aws.eduzz.dissotti.com:3333)
 
+- [Cobertura dos Testes](https://aws.eduzz.dissotti.com:3333/coverage)
+
 - Diagrama Entidade Relacionamento:
 
 <img src="./docs/MODEL.png" style="display: block; margin: 0 auto;" />
@@ -51,6 +53,7 @@ Algumas possíveis melhorias à ser implementadas são:
 - TypeScript
 - Docker
 - MariaDB
+- ESlint / Prettier
 - Sequelize ORM
   - Migrations
 - Swagger

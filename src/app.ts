@@ -3,6 +3,7 @@ import './bootstrap';
 import server from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
+import { resolve } from 'path';
 
 import './database';
 import routes from './routes';
@@ -26,6 +27,10 @@ class App {
     this.server.use(server.json());
     this.server.use(cors());
     this.server.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    this.server.use(
+      '/coverage',
+      server.static(resolve(__dirname, '..', '__tests__', 'coverage', 'lcov-report'))
+    );
   }
 
   private routes (): void {

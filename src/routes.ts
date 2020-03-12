@@ -22,7 +22,7 @@ routes.post('/users', UserController.store);
 
 routes.post('/sessions', SessionController.store);
 
-routes.use(authMiddleware);
+// routes.use(authMiddleware);
 
 routes.post('/credits', CreditController.store);
 

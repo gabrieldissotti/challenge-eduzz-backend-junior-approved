@@ -31,10 +31,10 @@ const swaggerDefinition = {
 const options = {
   swaggerDefinition,
   apis: [
-    path.resolve(__dirname, '..', 'app/models/*.ts'),
-    path.resolve(__dirname, '..', 'app/controllers/*.ts'),
-    path.resolve(__dirname, '..', 'app/models/*.js'),
-    path.resolve(__dirname, '..', 'app/controllers/*.js'),
+    path.resolve(__dirname, '..', 'app/models/**/*.ts'),
+    path.resolve(__dirname, '..', 'app/controllers/**/*.ts'),
+    path.resolve(__dirname, '..', 'app/models/**/*.js'),
+    path.resolve(__dirname, '..', 'app/controllers/**/*.js'),
   ],
 };
 
