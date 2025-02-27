@@ -36,16 +36,6 @@ O Projeto é uma API de investimento em bitcoins, possuí registro de usuários,
 
 <img src="./docs/MODEL.png" style="display: block; margin: 0 auto;" />
 
-### Logs
-Para explorar os logs da aplicação no Dashboard [faça login na loggly](https://app.loggly.com/sso/oidc/initiate) e utilize as credênciais:
-
-```
-email: gabriel.rodrigues31@fatec.sp.gov.br
-senha: eduzz123456
-```
-> Essa conta possuí permissão de leitura dos logs
-
-
 ### Desafios
 - Criar a modelagem e um algoritimo otimizados que contemple a compra e venda de bitcoins foi a parte mais desafiadora.
 - Utilizar typescript em uma API completa em Node.js, eu já havia utilizado antes mas apenas para uma API de middleware simples, mas nessa precisei utilizar models, jobs e migrations e com certeza isso me agregou muito conhecimento.
